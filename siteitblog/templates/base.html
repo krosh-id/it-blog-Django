@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'blog/css/normalize.css' %}">
+	<link rel="stylesheet" href="{% static 'blog/css/reset.css' %}">
+	<link type="image/x-icon" href="{% static 'blog/icon/favicon.ico' %}" rel="shortcut icon">
+    {% block meta %}{% endblock %}
+</head>
+
+<body>
+	<header class="header-container">
+		<div class="header-containter__nav-container nav-section">
+			<a href="{% url  'lenta' %}"> <img src="{% static 'blog/img/logo.svg' %}" alt="" class="nav-section__logo"> </a>
+			<nav class="nav-menu header-container__nav">
+				<ul class="nav-menu__list">
+					<li class="nav-menu__item-search" style="justify-self: left;">
+						<div class="nav-menu__search-form">
+							<button class="nav-menu__search-btn">
+								<img src="{% static 'blog/icon/search_icon.svg' %}" alt="поиск" class="nav-menu__search-btn-img">
+							</button>
+							<input type="text" name="search" id="" class="nav-menu__search-txt"
+								placeholder="Найди что-нибудь...">
+						</div>
+					</li>
+					<li>
+						<a class="nav-menu__item-image" href="{% url 'profile' profile.id %}">
+							<img class="image-icon" src="./img/аватарка.png" alt="" srcset="">
+							<img class="nav-menu__item-image-more" src="{% static 'blog/img/стрелка.svg' %}">
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main class="main-section">
+		<section class="main-section__menu">
+			{% include 'base_menu.html' %}
+		</section>
+        
+		<section class="main-section__content">
+			{% block content %} {% endblock %}
+		</section>
+		
+        <div class="main-section__friends">
+            {% include 'base_friend.html' %}
+		</div>
+	</main>
+
+</body>
+
+</html>

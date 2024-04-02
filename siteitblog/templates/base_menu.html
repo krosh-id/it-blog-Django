@@ -1,0 +1,32 @@
+{#боковое меню сайта#}
+{% load static %}
+<ul class="main-section__list menu-list">
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url  'profile' profile.id %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/user.svg' %}" />
+            <span class="menu-list__text">Профиль</span>
+        </a>
+    </li>
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url 'lenta' %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/lenta.svg' %}" />
+            <span class="menu-list__text">Лента</span>
+        </a>
+    </li>
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url 'my_post' profile.id %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/my post.svg' %}" />
+            <span class="menu-list__text">Мои посты</span>
+        </a>
+    </li>
+    <li>
+        <div class="menu-list__line">
+            <hr color="#E8820A" size="1">
+            <span class="menu-list__text">Следи за новостями:</span>
+            <div class="menu-list__share">
+                <a href="#"><img src="{% static 'blog/icon/tg.svg' %}" alt="Перейти в телеграмм"></a>
+                <a href="#"><img src="{% static 'blog/icon/vk.svg' %}" alt="Перейти в ВК"></a>
+            </div>
+        </div>
+    </li>
+</ul>

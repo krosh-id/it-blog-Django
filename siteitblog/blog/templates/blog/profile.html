@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Профиль</title>
+	<meta name="description" content="Профиль IT-hub">
+{% endblock %}
+{% block content %}
+    <div class="main-section__profile lenta">
+        <img class="image-icon" src="{% static 'blog/img/аватарка.png' %}" alt="" srcset="">
+        <div class="main-section__profile-info">
+            <span class="main-section__profile-name">{{ profile.name }}</span>
+            <span class="main-section__profile-status">{{ profile.status }}</span>
+        </div>
+        <button class="orange-button">редактировать</button>
+    </div>
+    {% for post in posts %}
+        {% include 'base_post.html' with post=post only %}
+    {% endfor %}
+{% endblock %}

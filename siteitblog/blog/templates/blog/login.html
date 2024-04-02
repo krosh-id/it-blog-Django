@@ -1,0 +1,16 @@
+{% extends 'base_login_registration.html' %}
+{% load static %}
+{% block meta %}
+    <title>Вход</title>
+	<meta name="description" content="Вход в IT-hub">
+{% endblock %}
+
+{% block form %}
+    <div class="main-registration__form">
+        <img src="{% static 'blog/img/logo.svg' %}" alt="" srcset="">
+        <div class="main-registration__form_input">
+            
+        </div>
+        <button class="orange-button">Войти</button>
+    </div>
+{% endblock %}
