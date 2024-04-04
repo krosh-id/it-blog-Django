@@ -233,6 +233,7 @@ body {
 .main-section__post-img img {
   border-radius: 5px;
   max-width: 100%;
+  text-align: center;
 }
 .main-section__reaction {
   display: flex;
@@ -313,12 +314,9 @@ body {
 }
 .menu-list__item {
   display: block;
-  min-height: 20px;
+  height: 20px;
   vertical-align: middle;
   margin-bottom: 15px;
-}
-.menu-list__item-hidden:hover div {
-  display: initial;
 }
 .menu-list__text {
   color: #B2B1B1;
@@ -349,26 +347,9 @@ body {
 .menu-list__line a img:last-child {
   margin: 0 14px 0 0;
 }
-.menu-list__hidden-category {
-  display: none;
-  width: 100%;
-}
-.menu-list__hidden-category li {
-  text-align: right;
-}
-.menu-list__hidden-category a {
-  padding: 3px 0 0 20px;
-  font-size: 12px;
-  font-weight: 500;
-  text-decoration: none;
-}
 .menu-list__share {
   text-align: center;
   height: 20px;
-}
-
-.choose-label {
-  color: #E8820A !important;
 }
 
 .main-registration {

@@ -15,8 +15,7 @@
                 Выбрать категорию
                 <img src="{% static '/blog/icon/стрелка.svg' %}" />
             </button>
-            <button class="orange-button">поделиться</button>
-        </div>
+        </div>    
     </div>
     {% for post in posts %}
         {% include 'base_post.html' with post=post only %}

@@ -1,7 +1,7 @@
-from datetime import datetime
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
+from blog.models import Post, Category
 
 menu = [
     {'title': 'Профиль', 'icon': './icon/user.svg', 'url_name': 'profile'},
@@ -15,33 +15,6 @@ friends = [
     {'id': 125, 'name': 'Злодей Британец', 'img': 'симпсон.png'},
 ]
 
-posts = [
-    {
-        'id': 1,
-        'category': '',
-        'author': {'id': 123, 'name': 'Супер котлета 228', 'img': 'котлета.png'},
-        'date': datetime(2005, 7, 14, 12, 30),
-        'text': """Значимость этих проблем настолько очевидна, что рамки и место обучения кадров обеспечивает широкому кругу (специалистов)
-            участие в формировании модели развития. Таким образом реализация намеченных плановых заданий
-            играет важную роль в
-            формировании форм развития. Товарищи!""",
-        'img': '',
-        'reaction': {'like': 5, 'lightning': 0, 'comments': 122}
-    },
-    {
-        'id': 1,
-        'category': '',
-        'author': {'id': 123, 'name': 'Супер котлета 228', 'img': 'котлета.png'},
-        'date': datetime(2005, 7, 14, 12, 30),
-        'text': """Значимость этих проблем настолько очевидна, что рамки и место обучения кадров обеспечивает широкому кругу (специалистов)
-        участие в формировании модели развития. Таким образом реализация намеченных плановых заданий
-        играет важную роль в
-        формировании форм развития. Товарищи!""",
-        'img': '',
-        'reaction': {'like': 5, 'lightning': 0, 'comments': 122}
-    }
-]
-
 profile = {
     "id": 1,
     "name": "Владислав Павлович",
@@ -51,6 +24,8 @@ profile = {
 
 
 def lenta(request):
+    posts = Post.objects.filter(is_published=True)
+
     data = {
         "id": 7,
         "friends": friends,
@@ -61,11 +36,27 @@ def lenta(request):
 
 
 def show_post(request, post_id: int):
-    return HttpResponse(f"Отображение статьи с id = {post_id}")
+    post = get_object_or_404(Post, pk=post_id)
+    data = {
+        "post": post,
+        "profile": profile,
+    }
+    return render(request, "blog/post.html", data)
 
 
 def my_post(request, profile_id: int):
     return HttpResponse(f"Отображение статей пользователя с id = {profile_id}")
+
+
+def show_category(request, cat_slug: str):
+    category = get_object_or_404(Category, slug=cat_slug)
+    posts = Post.objects.filter(category=category)
+    data = {
+        "cat_slug": cat_slug,
+        "posts": posts,
+        "profile": profile
+    }
+    return render(request, "blog/lenta.html", data)
 
 
 def login(request):
@@ -80,6 +71,6 @@ def profile_user(request, profile_id: int):
     # return HttpResponse(f"Страница профиля id = {profile_id}")
     data = {
         "profile": profile,
-        "post": posts
+#        "post": posts
     }
     return render(request, "blog/profile.html", data)
