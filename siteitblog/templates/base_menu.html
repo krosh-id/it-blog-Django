@@ -35,15 +35,22 @@
             </ul>
         </div>
     </li>
+    
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url 'resource' %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/my post.svg' %}" />
+            <span class="menu-list__text">Полезные ресурсы</span>
+        </a>
+    </li>
 
     <li>
         <div class="menu-list__line">
             <hr color="#E8820A" size="1">
             <span class="menu-list__text">Следи за новостями:</span>
             <div class="menu-list__share">
-                <a href="#"><img src="{% static 'blog/icon/tg.svg' %}" alt="Перейти в телеграмм"></a>
-                <a href="#"><img src="{% static 'blog/icon/vk.svg' %}" alt="Перейти в ВК"></a>
-                <a href="#"><img src="{% static 'blog/icon/github.svg' %}" alt="Перейти в GitHub"></a>
+                <a href="https://web.telegram.org/"><img src="{% static 'blog/icon/tg.svg' %}" alt="Перейти в телеграмм"></a>
+                <a href="https://vk.com/"><img src="{% static 'blog/icon/vk.svg' %}" alt="Перейти в ВК"></a>
+                <a href="https://github.com"><img src="{% static 'blog/icon/github.svg' %}" alt="Перейти в GitHub"></a>
             </div>
         </div>
     </li>

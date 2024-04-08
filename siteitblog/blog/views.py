@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-
+from django import forms
 from blog.models import Post, Category
 
 menu = [
@@ -71,6 +71,16 @@ def profile_user(request, profile_id: int):
     # return HttpResponse(f"Страница профиля id = {profile_id}")
     data = {
         "profile": profile,
-#        "post": posts
     }
     return render(request, "blog/profile.html", data)
+
+
+class NameForm(forms.Form):
+    your_name = forms.CharField(label='Name', max_length=100)
+
+def usefully_resource(request):
+    # data = {
+    #     "profile": profile,
+    #
+    # }
+    return render(request, "blog/usefully_resource.html", {"form": NameForm(), "profile": profile})
