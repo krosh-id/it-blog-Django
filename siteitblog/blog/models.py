@@ -8,8 +8,12 @@ class PublishedManager(models.Manager):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name='Категория')
     slug = models.SlugField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
@@ -20,24 +24,27 @@ class Category(models.Model):
 
 class Post(models.Model):
     class Status(models.IntegerChoices):
-        DRAFT = 1, 'Черновик'
-        PUBLISHED = 2, 'Опубликовано'
+        DRAFT = 0, 'Черновик'
+        PUBLISHED = 1, 'Опубликовано'
 
     author = models.PositiveIntegerField()
     # slug = models.SlugField(max_length=255, unique=True, db_index=True)
-    is_published = models.BooleanField(choices=Status.choices, default=Status.PUBLISHED)
+    is_published = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)),
+                                       default=Status.PUBLISHED)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     text = models.TextField(default=None, max_length=1000)
-    img = models.CharField(max_length=255, null=True) # изменить потом
+    img = models.CharField(max_length=255, null=True, blank=True) # изменить потом
     reaction = models.JSONField(null=True)
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='posts')
 
     def __str__(self):
-        return self.author
+        return str(self.author)
 
     class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
         ordering = ['-date_created']
         indexes = [
             models.Index(fields=['-date_created'])

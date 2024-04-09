@@ -23,4 +23,6 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls"))
 ]
 
+admin.site.site_header = "Панель администрирования IT-hub"
+admin.site.index_title = "Посты на сайте"
 # handler404 = (предстваление) обработка исключения 404 на странцие
