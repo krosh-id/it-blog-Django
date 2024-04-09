@@ -1,6 +1,6 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django import forms
+from django.shortcuts import render, get_object_or_404, redirect
+
+from blog.forms import AddPostLentaForm, AddMyPostForm
 from blog.models import Post, Category
 
 menu = [
@@ -25,12 +25,21 @@ profile = {
 
 def lenta(request):
     posts = Post.objects.filter(is_published=True)
+    if request.method == "POST":
+        form = AddPostLentaForm(request.POST)
+        if form.is_valid():
+            form.instance.author = request.user.id
+            form.save()
+            return redirect('my-post', request.user.id)
+    else:
+        form = AddPostLentaForm()
 
     data = {
         "id": 7,
         "friends": friends,
         "posts": posts,
-        "profile": profile
+        "profile": profile,
+        "form": form
     }
     return render(request, "blog/lenta.html", data)
 
@@ -45,7 +54,23 @@ def show_post(request, post_id: int):
 
 
 def my_post(request, profile_id: int):
-    return HttpResponse(f"Отображение статей пользователя с id = {profile_id}")
+    if request.method == "POST":
+        form = AddMyPostForm(request.POST)
+        if form.is_valid():
+            form.instance.author = request.user.id
+            form.save()
+            return redirect('my-post', request.user.id)
+    else:
+        form = AddMyPostForm()
+
+    posts = Post.objects.filter(author=request.user.id)
+
+    data = {
+        "profile": profile,
+        "form": form,
+        "posts": posts
+    }
+    return render(request, "blog/my_post.html", data)
 
 
 def show_category(request, cat_slug: str):
@@ -75,12 +100,9 @@ def profile_user(request, profile_id: int):
     return render(request, "blog/profile.html", data)
 
 
-class NameForm(forms.Form):
-    your_name = forms.CharField(label='Name', max_length=100)
-
 def usefully_resource(request):
     # data = {
     #     "profile": profile,
     #
     # }
-    return render(request, "blog/usefully_resource.html", {"form": NameForm(), "profile": profile})
+    return render(request, "blog/usefully_resource.html", {"profile": profile})

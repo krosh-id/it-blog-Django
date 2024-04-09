@@ -5,18 +5,19 @@
 	<meta name="description" content="Новости IT-hub">
 {% endblock %}
 {% block content %}
-    <div class="main-section__new-post lenta">
-        <div class="main-section__input-post">
-            <img class="image-icon" src="{{ profile.img }}" />
-            <textarea wrap="soft" rows="4" maxlength="280" placeholder="Что у вас нового ? "></textarea>
+    <form action="" method="post"> 
+        {% csrf_token %}
+        <div class="main-section__new-post lenta">
+            <div class="main-section__input-post">
+                <img class="image-icon" src="{{ profile.img }}" />
+                {{ form.text }}
+            </div>
+            <div class="main-section__share-post">
+                {{ form.category }}
+                <button class="orange-button" type="submit">поделиться</button>
+            </div>    
         </div>
-        <div class="main-section__share-post">
-            <button class="main-section__select-category-btn">
-                Выбрать категорию
-                <img src="{% static '/blog/icon/стрелка.svg' %}" />
-            </button>
-        </div>    
-    </div>
+    </form>
     {% for post in posts %}
         {% include 'base_post.html' with post=post only %}
     {% endfor %}

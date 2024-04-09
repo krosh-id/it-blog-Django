@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Мои посты</title>
+	<meta name="description" content="Мои посты в IT-hub">
+{% endblock %}
+
+{# добавить отображение постов по айди пользователя #}
+{% block content %}
+    
+    <form action="" method="post"> 
+        {% csrf_token %}
+        <div class="main-section__new-my-post lenta">
+            <div class="main-section__input-my-post">
+                <img class="image-icon" src="{{ profile.img }}"  alt=""/>
+                {{ form.text }}
+                <img src="{% static 'blog/icon/upload.svg' %}"  alt=""/>
+            </div>
+            <div class="main-section__input-label">
+                <label>Изображений загружено: 0/1 </label>
+                <label>0/500</label>
+            </div>
+            <div class="main-section__share-post">
+                {{ form.category }}
+                <button class="orange-button" type="submit">запостить</button>
+            </div>    
+        </div>
+    </form>
+    
+    {% for post in posts %}
+        {% include 'base_post.html' with post=post only %}
+    {% endfor %}
+    
+{% endblock %}

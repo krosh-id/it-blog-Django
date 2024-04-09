@@ -2,6 +2,10 @@ from django.db import models
 from django.urls import reverse
 
 
+def get_default_reaction():
+    return {"like": 0, "lightning": 0, "comments": 0}
+
+
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=Post.Status.PUBLISHED)
@@ -33,9 +37,9 @@ class Post(models.Model):
                                        default=Status.PUBLISHED)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    text = models.TextField(default=None, max_length=1000)
+    text = models.TextField(default=None, max_length=500)
     img = models.CharField(max_length=255, null=True, blank=True) # изменить потом
-    reaction = models.JSONField(null=True)
+    reaction = models.JSONField(null=True, blank=True, default=get_default_reaction)
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='posts')
 
