@@ -38,7 +38,7 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     text = models.TextField(default=None, max_length=500)
-    img = models.CharField(max_length=255, null=True, blank=True) # изменить потом
+    image = models.ImageField(upload_to='photos/%Y/%m/%d/', default=None, null=True, blank=True, verbose_name='Фото')
     reaction = models.JSONField(null=True, blank=True, default=get_default_reaction)
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='posts')
@@ -56,4 +56,3 @@ class Post(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse('post', kwargs={'post_slug': self.slug})
-

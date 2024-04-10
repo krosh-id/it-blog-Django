@@ -80,6 +80,10 @@ body {
   background-color: rgba(178, 177, 177, 0);
 }
 
+#my-input:focus {
+  background-color: #ffff00;
+}
+
 .main-section {
   display: flex;
   max-width: 1200px;
@@ -340,6 +344,13 @@ body {
   color: black;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
+}
+.orange-button:hover {
+  color: white;
+}
+
+.custom-file-upload {
   cursor: pointer;
 }
 

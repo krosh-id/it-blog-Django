@@ -19,9 +19,9 @@
             {% endif %}
         </span>
         <!-- Добавить слайдер картинок -->
-        {% if post.img %}
+        {% if post.image %}
             <div class="main-section__post-img">
-                <img src="{{ post.img }}" alt="" srcset="" />
+                <img src="{{ post.image.url }}" alt="" srcset="" />
             </div>
         {% endif %}
     </div>

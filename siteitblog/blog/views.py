@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
-from blog.forms import AddPostLentaForm, AddMyPostForm
+from blog.forms import AddPostLentaForm, AddMyPostForm, AddFeedbackForm
 from blog.models import Post, Category
 
 menu = [
@@ -55,7 +55,7 @@ def show_post(request, post_id: int):
 
 def my_post(request, profile_id: int):
     if request.method == "POST":
-        form = AddMyPostForm(request.POST)
+        form = AddMyPostForm(request.POST, request.FILES)
         if form.is_valid():
             form.instance.author = request.user.id
             form.save()
@@ -101,8 +101,21 @@ def profile_user(request, profile_id: int):
 
 
 def usefully_resource(request):
-    # data = {
-    #     "profile": profile,
-    #
-    # }
-    return render(request, "blog/usefully_resource.html", {"profile": profile})
+    full_data = {}
+    if request.method == "POST":
+        form = AddFeedbackForm(request.POST)
+        if form.is_valid():
+            full_data = form.cleaned_data
+            if full_data["notice"] == True:
+                full_data["notice"] = 'Да'
+            else:
+                full_data["notice"] = 'Нет'
+    else:
+        form = AddFeedbackForm()
+
+    data = {
+        "profile": profile,
+        "form": form,
+        "full_data": full_data
+    }
+    return render(request, "blog/usefully_resource.html", data)

@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="carousel-item">
-        <img class="d-block w-100" style="background-color: #0E0E0E" src="{% static 'blog/img/247.svg' %}" alt="Третий слайд">
+        <img class="d-block w-100" style="background-color: #0E0E0E" src="{% static 'blog/img/247.jpg' %}" alt="Третий слайд">
         <div class="carousel-caption d-none d-md-block">
             <h3>Круглосуточная консультация по вашим вопросам</h3>
         </div>
@@ -42,7 +42,27 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-
+    
+{% if full_data.name|length > 0 %}
+    <h2> Данные которые вы указали: </h2>
+    <p>Имя: {{ full_data.name }}</p>
+        <p>Город: {{ full_data.city }}</p>
+        <p>Пол: {{ full_data.gender }}</p>
+        <p>Работа: {{ full_data.job }}</p>
+        <p>В интернете: {{ full_data.internet }}</p>
+        <p>Получать новости сайта на email: {{ full_data.notice }}</p>
+        <p>Ваш email: {{ full_data.email }}</p>
+        <p>Информация о себе: {{ full_data.message }}</p>
+{% else %}
+    <h2>Отправьте, пожалуйста, заполненную анкету: </h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for f in form %}
+            <p><label for="{{ f.id_for_label }}">{{ f.label }}</label> {{ f }}</p>
+        {% endfor %}
+        <button class="orange-button" type="submit">Отправить</button>
+    </form>
+{% endif %}
 {% endblock %}
 
 
