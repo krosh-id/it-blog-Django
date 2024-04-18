@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
-from blog.forms import AddPostLentaForm, AddMyPostForm, AddFeedbackForm
-from blog.models import Post, Category
+from blog.forms import AddPostLentaForm, AddMyPostForm, AddFeedbackForm, AddCommentForm
+from blog.models import Post, Category, Comment
 
 menu = [
     {'title': 'Профиль', 'icon': './icon/user.svg', 'url_name': 'profile'},
@@ -45,10 +45,24 @@ def lenta(request):
 
 
 def show_post(request, post_id: int):
-    post = get_object_or_404(Post, pk=post_id)
+    post = Post.objects.get(id=post_id)
+    comments = post.comment.all()
+
+    if request.method == "POST":
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            form.instance.author = request.user.id
+            form.instance.post = post
+            form.save()
+            return redirect('post', post.id)
+    else:
+        form = AddCommentForm()
+
     data = {
         "post": post,
+        "comments": comments,
         "profile": profile,
+        'form': form
     }
     return render(request, "blog/post.html", data)
 
@@ -106,7 +120,7 @@ def usefully_resource(request):
         form = AddFeedbackForm(request.POST)
         if form.is_valid():
             full_data = form.cleaned_data
-            if full_data["notice"] == True:
+            if full_data["notice"]:
                 full_data["notice"] = 'Да'
             else:
                 full_data["notice"] = 'Нет'

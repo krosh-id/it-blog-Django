@@ -209,6 +209,23 @@ body
 			color: #FFFFFF
 			background-color: #ffffff00
 
+	&__post-comments-form
+		& form
+			display: flex
+			align-items: center
+
+	&__input-comment
+		display: flex
+		flex-grow: 1
+		& input
+			width: 90%
+			background-color: #0E0E0E
+			color: white
+			border: 1px solid #B2B1B1
+			border-radius: 5px
+			padding: 5px 14px
+			font-size: 14px
+
 	&__share-post
 		display: flex
 		padding: 0 29px
@@ -225,6 +242,11 @@ body
 		background-color: #e8800a00
 		&:active
 			color: #E8820A
+
+	&__post-comments
+		border-bottom-right-radius: 0 !important
+		border-bottom-left-radius: 0 !important
+		gap: 10px
 
 	&__post
 		gap: 14px
@@ -314,6 +336,39 @@ body
 		color: #B2B1B1
 		font-size: 12px
 
+//комментарии
+.comment
+	display: flex
+	justify-content: flex-start
+
+	&__text
+		display: flex
+		flex-direction: column
+		gap: 5px
+		width: 488px
+
+		& hr
+			margin: 0
+			width: 488px
+			border: 1px solid #B2B1B1
+
+
+	&__date
+		display: flex
+		justify-content: space-between
+		color: #B2B1B1
+		font-size: 12px
+		font-weight: 500
+
+	&__like
+		display: flex
+		align-items: center
+		& img
+			margin-right: 2px
+
+
+
+
 .button-icon
 	background-color: #e8800a00
 	padding: 0 0 0 0
@@ -331,6 +386,8 @@ body
 	cursor: pointer
 	&:hover
 		color: white
+
+
 
 .custom-file-upload
 	cursor: pointer

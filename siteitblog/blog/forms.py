@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Category
+from .models import Post, Category, Comment
 
 
 class AddPostLentaForm(forms.ModelForm):
@@ -38,6 +38,19 @@ class AddMyPostForm(forms.ModelForm):
                 'minlength': 10
             }),
             'image': forms.FileInput(attrs={"hidden": "hidden", "id":"real-input"})
+        }
+
+
+class AddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': forms.TextInput(attrs={
+                'placeholder': 'Оставить комментарий...',
+                'maxlength': 150,
+                'minlength': 10
+            })
         }
 
 

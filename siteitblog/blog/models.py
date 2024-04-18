@@ -26,6 +26,21 @@ class Category(models.Model):
         return reverse('category', kwargs={'cat_slug': self.slug})
 
 
+class Comment(models.Model):
+    author = models.PositiveIntegerField()
+    text = models.TextField(max_length=155, verbose_name='Комментарий')
+    image = models.ImageField(upload_to='photos_comments/%Y/%m/%d/', default=None, null=True, blank=True,
+                              verbose_name='Изображение')
+    reaction = models.JSONField(null=True, blank=True, default=get_default_reaction)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comment')
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+
 class Post(models.Model):
     class Status(models.IntegerChoices):
         DRAFT = 0, 'Черновик'
@@ -38,7 +53,8 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     text = models.TextField(default=None, max_length=500)
-    image = models.ImageField(upload_to='photos/%Y/%m/%d/', default=None, null=True, blank=True, verbose_name='Фото')
+    image = models.ImageField(upload_to='photos/%Y/%m/%d/', default=None, null=True, blank=True,
+                              verbose_name='Изображение')
     reaction = models.JSONField(null=True, blank=True, default=get_default_reaction)
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='posts')

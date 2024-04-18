@@ -1,0 +1,40 @@
+{% load static %}
+{# блок комментариев к посту #}
+<div class="main-section__post-comments lenta">
+{#    реализовать пагинацию комментариев #}
+    {% for comment in comments %}
+        <div class="comment" >
+            <img class="image-icon" src="{{ comment.author.img }}" alt="" srcset="">
+            <div class="comment__text">
+                <span class="main-section__post-name">Зледей британец</span>
+                <span class="main-section__post-text">{{ comment.text }}</span>
+                <span class="comment__date">
+                    {{ comment.date_created|date:"j F Y" }} в {{ comment.date_created|time:"H:i" }}
+                    <span class="comment__like">
+                        <img src="{% static 'blog/icon/like_comment.svg' %}" alt="">
+                        {{ comment.reaction.like }}
+                    </span>
+                </span>
+                <!-- Добавить новые стили -->
+                {% if comment.image %}
+                    <div class="main-section__post-img">
+                        <img src="{{ post.image.url }}" alt="" srcset="" />
+                    </div>
+                {% endif %}
+                <hr>
+            </div>
+        </div>
+    {% endfor %}
+{#    форма отправки комментария #}
+    <div class="main-section__post-comments-form">
+{#        Добавить загрузку изображений #}
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="main-section__input-comment">
+                <img class="image-icon" src="{{ profile.img }}" />
+                {{ form.text }}
+            </div>
+            <button class="button-icon" type="submit"><img src="{% static 'blog/icon/send-message.svg' %}" /></button>
+        </form>
+    </div>
+</div>
