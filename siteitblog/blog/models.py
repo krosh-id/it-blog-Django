@@ -40,6 +40,9 @@ class Comment(models.Model):
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'post_id': self.post.id})
+
 
 class Post(models.Model):
     class Status(models.IntegerChoices):
@@ -70,5 +73,5 @@ class Post(models.Model):
             models.Index(fields=['-date_created'])
         ]
 
-    # def get_absolute_url(self):
-    #     return reverse('post', kwargs={'post_slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'post_id': self.id})

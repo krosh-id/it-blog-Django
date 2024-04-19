@@ -1,7 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import ModelForm
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView
+from django.views import View
 
 from blog.forms import AddPostLentaForm, AddMyPostForm, AddFeedbackForm, AddCommentForm
-from blog.models import Post, Category, Comment
+from blog.models import Post, Category
 
 menu = [
     {'title': 'Профиль', 'icon': './icon/user.svg', 'url_name': 'profile'},
@@ -22,80 +27,106 @@ profile = {
     "status": "в поисках error 404"
 }
 
+# базовый класс для отображения какой-либо формы и списка чего либо
 
-def lenta(request):
-    posts = Post.objects.filter(is_published=True)
-    if request.method == "POST":
-        form = AddPostLentaForm(request.POST)
+
+class PostsFormListView(LoginRequiredMixin, View):
+    form_class = ModelForm
+    redirect_to = None
+    redirect_args = None
+    extra_context = None
+    template_name = None
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        self.extra_context['form'] = form
+        return render(request, self.template_name, self.extra_context)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        self.extra_context['form'] = form
         if form.is_valid():
             form.instance.author = request.user.id
             form.save()
-            return redirect('my-post', request.user.id)
-    else:
-        form = AddPostLentaForm()
+            if self.redirect_args:
+                return redirect(to=self.redirect_to, args=self.redirect_args)
+            else:
+                return redirect(to=self.redirect_to)
 
-    data = {
+
+class LentaView(PostsFormListView):
+    posts = Post.objects.filter(is_published=True)
+    template_name = 'blog/lenta.html'
+    form_class = AddPostLentaForm
+    redirect_to = 'lenta'
+    extra_context = {
         "id": 7,
         "friends": friends,
         "posts": posts,
         "profile": profile,
-        "form": form
     }
-    return render(request, "blog/lenta.html", data)
 
 
-def show_post(request, post_id: int):
-    post = Post.objects.get(id=post_id)
-    comments = post.comment.all()
+class ShowPostView(LoginRequiredMixin, CreateView):
+    form_class = AddCommentForm
+    template_name = 'blog/post.html'
+    # success_url = reverse_lazy('post')
 
-    if request.method == "POST":
-        form = AddCommentForm(request.POST)
-        if form.is_valid():
-            form.instance.author = request.user.id
-            form.instance.post = post
-            form.save()
-            return redirect('post', post.id)
-    else:
-        form = AddCommentForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = Post.objects.get(id=self.kwargs.get('post_id'))
+        context['comments'] = context['post'].comment.all()
+        context['profile'] = profile
+        return context
 
-    data = {
-        "post": post,
-        "comments": comments,
-        "profile": profile,
-        'form': form
-    }
-    return render(request, "blog/post.html", data)
+    def form_valid(self, form):
+        form.instance.author = self.request.user.id
+        form.instance.post = self.get_context_data()['post']
+        return super().form_valid(form)
 
 
-def my_post(request, profile_id: int):
-    if request.method == "POST":
-        form = AddMyPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.instance.author = request.user.id
-            form.save()
-            return redirect('my-post', request.user.id)
-    else:
-        form = AddMyPostForm()
+class ShowMyPostsView(LoginRequiredMixin, CreateView):
+    form_class = AddMyPostForm
+    template_name = 'blog/my_post.html'
+    # success_url = reverse_lazy('post')
 
-    posts = Post.objects.filter(author=request.user.id)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile'] = profile
+        context['posts'] = Post.objects.filter(author=self.request.user.id)
+        return context
 
-    data = {
-        "profile": profile,
-        "form": form,
-        "posts": posts
-    }
-    return render(request, "blog/my_post.html", data)
+    def form_valid(self, form):
+        form.instance.author = self.request.user.id
+        return super().form_valid(form)
 
 
-def show_category(request, cat_slug: str):
-    category = get_object_or_404(Category, slug=cat_slug)
-    posts = Post.objects.filter(category=category)
-    data = {
-        "cat_slug": cat_slug,
-        "posts": posts,
-        "profile": profile
-    }
-    return render(request, "blog/lenta.html", data)
+class ShowByCategoryView(LoginRequiredMixin, ListView):
+    template_name = "blog/lenta.html"
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        category = get_object_or_404(Category, slug=self.kwargs.get('cat_slug'))
+        return Post.objects.filter(category=category)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile'] = profile
+        context['cat_slug'] = self.kwargs.get('cat_slug')
+        return context
+
+
+class ProfileView(LoginRequiredMixin, ListView):
+    template_name = "blog/profile.html"
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile'] = profile
+        return context
 
 
 def login(request):
@@ -104,14 +135,6 @@ def login(request):
 
 def registration(request):
     return render(request, "blog/registration.html")
-
-
-def profile_user(request, profile_id: int):
-    # return HttpResponse(f"Страница профиля id = {profile_id}")
-    data = {
-        "profile": profile,
-    }
-    return render(request, "blog/profile.html", data)
 
 
 def usefully_resource(request):
