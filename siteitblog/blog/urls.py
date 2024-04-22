@@ -1,7 +1,7 @@
 from django.urls import path, register_converter
 from . import converters
 from .views import LentaView, \
-    ShowPostView, ShowMyPostsView, ShowByCategoryView, ProfileView
+    ShowPostView, ShowMyPostsView, ProfileView, ShowByCategoryView
 
 register_converter(converters.FourDigitYearConverter, 'year4')
 

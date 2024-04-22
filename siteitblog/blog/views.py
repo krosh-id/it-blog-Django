@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ModelForm
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView
 from django.views import View
 
@@ -27,49 +27,47 @@ profile = {
     "status": "в поисках error 404"
 }
 
-# базовый класс для отображения какой-либо формы и списка чего либо
 
-
-class PostsFormListView(LoginRequiredMixin, View):
-    form_class = ModelForm
-    redirect_to = None
-    redirect_args = None
-    extra_context = None
-    template_name = None
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        self.extra_context['form'] = form
-        return render(request, self.template_name, self.extra_context)
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        self.extra_context['form'] = form
-        if form.is_valid():
-            form.instance.author = request.user
-            form.save()
-            if self.redirect_args:
-                return redirect(to=self.redirect_to, args=self.redirect_args)
-            else:
-                return redirect(to=self.redirect_to)
-
-
-class LentaView(PostsFormListView):
-    posts = Post.objects.filter()
-    template_name = 'blog/lenta.html'
+class LentaView(LoginRequiredMixin, CreateView):
     form_class = AddPostLentaForm
-    redirect_to = 'lenta'
-    extra_context = {
-        "id": 7,
-        "friends": friends,
-        "posts": posts,
-        "profile": profile,
-    }
+    template_name = 'blog/lenta.html'
+    success_url = reverse_lazy('profile')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.all().select_related('author')
+        context['profile'] = profile
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = self.get_context_data()['post']
+        return super().form_valid(form)
+
+
+class ShowByCategoryView(LoginRequiredMixin, CreateView):
+    form_class = AddPostLentaForm
+    template_name = 'blog/lenta.html'
+    success_url = reverse_lazy('profile')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = get_object_or_404(Category, slug=self.kwargs.get('cat_slug'))
+        context['cat_slug'] = self.kwargs.get('cat_slug')
+        context['posts'] = Post.objects.filter(category=category).all().select_related('author')
+        context['profile'] = profile
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = self.get_context_data()['post']
+        return super().form_valid(form)
 
 
 class ShowPostView(LoginRequiredMixin, CreateView):
     form_class = AddCommentForm
     template_name = 'blog/post.html'
+
     # success_url = reverse_lazy('post')
 
     def get_context_data(self, **kwargs):
@@ -88,6 +86,7 @@ class ShowPostView(LoginRequiredMixin, CreateView):
 class ShowMyPostsView(LoginRequiredMixin, CreateView):
     form_class = AddMyPostForm
     template_name = 'blog/my_post.html'
+
     # success_url = reverse_lazy('post')
 
     def get_context_data(self, **kwargs):
@@ -99,21 +98,6 @@ class ShowMyPostsView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
-
-class ShowByCategoryView(LoginRequiredMixin, ListView):
-    template_name = "blog/lenta.html"
-    context_object_name = 'posts'
-
-    def get_queryset(self):
-        category = get_object_or_404(Category, slug=self.kwargs.get('cat_slug'))
-        return Post.objects.filter(category=category)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['profile'] = profile
-        context['cat_slug'] = self.kwargs.get('cat_slug')
-        return context
 
 
 class ProfileView(LoginRequiredMixin, ListView):
