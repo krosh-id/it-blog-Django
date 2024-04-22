@@ -130,6 +130,13 @@ class ProfileView(LoginRequiredMixin, ListView):
 
 
 def usefully_resource(request):
+    data = {
+        "profile": profile
+    }
+    return render(request, "blog/usefully_resource.html", data)
+
+
+def forms(request):
     full_data = {}
     if request.method == "POST":
         form = AddFeedbackForm(request.POST)
@@ -147,4 +154,12 @@ def usefully_resource(request):
         "form": form,
         "full_data": full_data
     }
-    return render(request, "blog/usefully_resource.html", data)
+    return render(request, "blog/forms.html", data)
+
+
+def video(request):
+    data = {
+        "profile": profile
+    }
+    return render(request, "blog/video.html", data)
+

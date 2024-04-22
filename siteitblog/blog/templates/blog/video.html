@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Лента</title>
+	<meta name="description" content="Новости IT-hub">
+{% endblock %}
+{% block content %}
+    <div>
+        <h2>Как стать программистом</h2>
+        <video src="{% static 'blog/video/1.mp4' %}" controls="controls" width="400px" height="300px"></video>
+    </div>
+    <div>
+        <h2>Что делает бухгалтер в айти?</h2>
+        <video src="{% static 'blog/video/2.mp4' %}" controls="controls" width="400px" height="300px"></video>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Лента</title>
+	<meta name="description" content="Новости IT-hub">
+{% endblock %}
+{% block content %}
+{% if full_data.name|length > 0 %}
+    <h2> Данные которые вы указали: </h2>
+    <p>Имя: {{ full_data.name }}</p>
+        <p>Город: {{ full_data.city }}</p>
+        <p>Пол: {{ full_data.gender }}</p>
+        <p>Работа: {{ full_data.job }}</p>
+        <p>В интернете: {{ full_data.internet }}</p>
+        <p>Получать новости сайта на email: {{ full_data.notice }}</p>
+        <p>Ваш email: {{ full_data.email }}</p>
+        <p>Информация о себе: {{ full_data.message }}</p>
+{% else %}
+    <h2>Отправьте, пожалуйста, заполненную анкету: </h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for f in form %}
+            <p><label for="{{ f.id_for_label }}">{{ f.label }}</label> {{ f }}</p>
+        {% endfor %}
+        <button class="orange-button" type="submit">Отправить</button>
+    </form>
+{% endif %}
+{% endblock %}
