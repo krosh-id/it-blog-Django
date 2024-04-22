@@ -1,0 +1,24 @@
+{% extends 'base_login_registration.html' %}
+{% load static %}
+{% block meta %}
+    <title>Вход</title>
+	<meta name="description" content="Вход в IT-hub">
+{% endblock %}
+
+{% block form %}
+    <div class="main-registration__form">
+        <img src="{% static 'blog/img/logo.svg' %}" alt="" srcset="">
+        <form method="post">
+            {% csrf_token %}
+            {% for f in form %}
+                <div class="main-registration__form_input">
+                    <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+                    <br>
+                    {{ f }}
+                </div>
+            {% endfor %}
+            <a href="{% url 'users:register' %}">Ещё не зарегистрировались?</a>
+            <button class="orange-button" type="submit">Войти</button>
+        </form>    
+    </div>
+{% endblock %}

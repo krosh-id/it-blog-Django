@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
@@ -27,7 +28,7 @@ class Category(models.Model):
 
 
 class Comment(models.Model):
-    author = models.PositiveIntegerField()
+
     text = models.TextField(max_length=155, verbose_name='Комментарий')
     image = models.ImageField(upload_to='photos_comments/%Y/%m/%d/', default=None, null=True, blank=True,
                               verbose_name='Изображение')
@@ -35,6 +36,7 @@ class Comment(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comment')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comment')
 
     class Meta:
         verbose_name = 'Комментарий'
@@ -49,7 +51,6 @@ class Post(models.Model):
         DRAFT = 0, 'Черновик'
         PUBLISHED = 1, 'Опубликовано'
 
-    author = models.PositiveIntegerField()
     # slug = models.SlugField(max_length=255, unique=True, db_index=True)
     is_published = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)),
                                        default=Status.PUBLISHED)
@@ -60,6 +61,7 @@ class Post(models.Model):
                               verbose_name='Изображение')
     reaction = models.JSONField(null=True, blank=True, default=get_default_reaction)
 
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='posts')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='posts')
 
     def __str__(self):

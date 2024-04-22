@@ -46,7 +46,7 @@ class PostsFormListView(LoginRequiredMixin, View):
         form = self.form_class(request.POST)
         self.extra_context['form'] = form
         if form.is_valid():
-            form.instance.author = request.user.id
+            form.instance.author = request.user
             form.save()
             if self.redirect_args:
                 return redirect(to=self.redirect_to, args=self.redirect_args)
@@ -55,7 +55,7 @@ class PostsFormListView(LoginRequiredMixin, View):
 
 
 class LentaView(PostsFormListView):
-    posts = Post.objects.filter(is_published=True)
+    posts = Post.objects.filter()
     template_name = 'blog/lenta.html'
     form_class = AddPostLentaForm
     redirect_to = 'lenta'
@@ -80,7 +80,7 @@ class ShowPostView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.author = self.request.user.id
+        form.instance.author = self.request.user
         form.instance.post = self.get_context_data()['post']
         return super().form_valid(form)
 
@@ -93,11 +93,11 @@ class ShowMyPostsView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['profile'] = profile
-        context['posts'] = Post.objects.filter(author=self.request.user.id)
+        context['posts'] = Post.objects.filter(author=self.request.user)
         return context
 
     def form_valid(self, form):
-        form.instance.author = self.request.user.id
+        form.instance.author = self.request.user
         return super().form_valid(form)
 
 
@@ -121,20 +121,12 @@ class ProfileView(LoginRequiredMixin, ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.filter(author=self.request.user.id)
+        return Post.objects.filter(author=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['profile'] = profile
         return context
-
-
-def login(request):
-    return render(request, "blog/login.html")
-
-
-def registration(request):
-    return render(request, "blog/registration.html")
 
 
 def usefully_resource(request):
