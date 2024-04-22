@@ -17,8 +17,9 @@
                     {{ f }}
                 </div>
             {% endfor %}
-            <a href="{% url 'users:login' %}">Уже зарегистрированы?</a>
             <button class="orange-button" type="submit">Зарегистрироваться</button>
+            <a href="{% url 'users:login' %}">Уже зарегистрированы?</a>
+            <a href="#">Проблемы с регистрацией?</a>
         </form>    
     </div>
 {% endblock %}

@@ -127,39 +127,3 @@ class ProfileView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['profile'] = profile
         return context
-
-
-def usefully_resource(request):
-    data = {
-        "profile": profile
-    }
-    return render(request, "blog/usefully_resource.html", data)
-
-
-def forms(request):
-    full_data = {}
-    if request.method == "POST":
-        form = AddFeedbackForm(request.POST)
-        if form.is_valid():
-            full_data = form.cleaned_data
-            if full_data["notice"]:
-                full_data["notice"] = 'Да'
-            else:
-                full_data["notice"] = 'Нет'
-    else:
-        form = AddFeedbackForm()
-
-    data = {
-        "profile": profile,
-        "form": form,
-        "full_data": full_data
-    }
-    return render(request, "blog/forms.html", data)
-
-
-def video(request):
-    data = {
-        "profile": profile
-    }
-    return render(request, "blog/video.html", data)
-
