@@ -1,11 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import ModelForm
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
-from django.views import View
 
-from blog.forms import AddPostLentaForm, AddMyPostForm, AddFeedbackForm, AddCommentForm
+from blog.forms import AddPostLentaForm, AddMyPostForm, AddCommentForm
 from blog.models import Post, Category
 
 menu = [
@@ -26,7 +24,7 @@ profile = {
     "img": "",
     "status": "в поисках error 404"
 }
-
+# сделать миксин который оформляет данные о пользователе (profile)
 
 class LentaView(LoginRequiredMixin, CreateView):
     form_class = AddPostLentaForm
@@ -109,5 +107,10 @@ class ProfileView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile'] = profile
+        context['profile'] = {
+            "id": self.request.user.id,
+            "name": self.request.user.first_name+' '+self.request.user.last_name,
+            "img": "",
+            "status": "в поисках error 404"
+        }
         return context
