@@ -1,0 +1,23 @@
+{# боковое меню списка друзей #}
+{% load static %}
+<div class="main-section__friends-title">
+    <h1>Ваши хацкеры</h1>
+    <hr color="#E8820A" size="1">
+</div>
+
+{% if friends %}
+    {% for friend in friends %}
+        <div class="main-section__one-friend">
+            <a href="{% url  'profile' friend.id %}">
+                <img src="{% static 'blog/img/luntik.png' %}">
+                <div>{{ friend.name }}</div>
+            </a>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="main-section__one-friend-all">
+    <a href="#">
+        Посмотреть всех
+    </a>
+</div>

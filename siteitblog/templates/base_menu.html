@@ -1,0 +1,70 @@
+{#боковое меню сайта#}
+{% load static %}
+{% load blog_tags %}
+
+<ul class="main-section__list menu-list">
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url  'profile' profile.id %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/user.svg' %}" />
+            <span class="menu-list__text">Профиль</span>
+        </a>
+    </li>
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url 'my-post' profile.id %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/my post.svg' %}" />
+            <span class="menu-list__text">Мои посты</span>
+        </a>
+    </li>
+    <li class="main-section__list-item menu-list__item menu-list__item-hidden">
+        <a href="{% url 'lenta' %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/lenta.svg' %}" />
+            <span class="menu-list__text">Лента</span>
+            <img src="{% static '/blog/icon/стрелка.svg' %}" />
+        </a>
+{#        Раскрывающийся список #}
+        <div class="menu-list__hidden-category">
+            <ul>
+                {% getcats as categories %}
+                {% for cat in categories %}
+                    {% if cat_slug == cat.slug %}
+                        <li> <a href="{{ cat.get_absolute_url }}" class="menu-list__text choose-label" title="{{ cat.name }}"> {{ cat.name|truncatechars:15 }}</a> </li>
+                    {% else %}
+                        <li> <a href="{{ cat.get_absolute_url }}" class="menu-list__text" title="{{ cat.name }}"> {{ cat.name|truncatechars:15 }}</a> </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </li>
+    
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url 'resource' %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/my post.svg' %}" />
+            <span class="menu-list__text">Полезные ресурсы</span>
+        </a>
+    </li>
+
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url 'forms' %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/my post.svg' %}" />
+            <span class="menu-list__text">Оставить отзыв</span>
+        </a>
+    </li>
+        <li class="main-section__list-item menu-list__item">
+        <a href="{% url 'video' %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/my post.svg' %}" />
+            <span class="menu-list__text">Видео</span>
+        </a>
+    </li>
+
+    <li>
+        <div class="menu-list__line">
+            <hr color="#E8820A" size="1">
+            <span class="menu-list__text">Следи за новостями:</span>
+            <div class="menu-list__share">
+                <a href="https://web.telegram.org/"><img src="{% static 'blog/icon/tg.svg' %}" alt="Перейти в телеграмм"></a>
+                <a href="https://vk.com/"><img src="{% static 'blog/icon/vk.svg' %}" alt="Перейти в ВК"></a>
+                <a href="https://github.com"><img src="{% static 'blog/icon/github.svg' %}" alt="Перейти в GitHub"></a>
+            </div>
+        </div>
+    </li>
+</ul>
