@@ -20,8 +20,15 @@
                 </label>
             </div>
             <div class="main-section__input-label">
-                <label>Изображений загружено: 0/1 </label>
-                <label>0/500</label>
+                <label>Изображений загружено: 
+                    <span id="counter-image">0</span>
+                    /
+                    1 </label>
+                <span>
+                    <span id="counter-input">0</span>
+                    <span>/</span>
+                    <span>500</span>
+                </span>
             </div>
             <div class="main-section__share-post">
                 {{ form.category }}

@@ -74,6 +74,7 @@ body
 		background-color: #b2b1b100
 #my-input:focus
 	background-color: #ffff00
+
 //main section 
 .main-section
 	display: flex
@@ -81,6 +82,10 @@ body
 	margin: 0 auto
 	flex-direction: row
 	color: white
+
+	&__select-category-btn
+		border: none
+		outline: none
 
 	&__menu
 		display: flex
@@ -187,7 +192,7 @@ body
 		display: flex
 		padding: 4px 55px 4px 64px
 		justify-content: space-between
-		& label
+		& label, span
 			font-weight: 700
 			font-size: 12px
 			color: #B2B1B1
@@ -208,6 +213,7 @@ body
 			resize: none
 			color: #FFFFFF
 			background-color: #ffffff00
+			overflow-y: hidden
 
 	&__post-comments-form
 		& form
@@ -502,7 +508,26 @@ body
 		color: #B2B1B1
 		font-style: normal
 
+		& label
+			margin-bottom: 3px
+
+
 		& input
+			box-shadow: none
+			outline: none
+			padding-left: 5px
+			padding-right: 5px
 			width: 100%
-			height: 34px
+			height: 30px
 			border-radius: 5px
+
+	&__form-input-error
+		& input
+			border: 2px solid #d10707
+			background-color: #c1c1c1
+			&:focus
+				background-color: white
+
+	&__form-error
+		color: #d10707
+		font-size: 12px

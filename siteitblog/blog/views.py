@@ -26,6 +26,7 @@ profile = {
 }
 # сделать миксин который оформляет данные о пользователе (profile)
 
+
 class LentaView(LoginRequiredMixin, CreateView):
     form_class = AddPostLentaForm
     template_name = 'blog/lenta.html'

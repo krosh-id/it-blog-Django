@@ -35,7 +35,8 @@ class AddMyPostForm(forms.ModelForm):
                 'rows': 5,
                 'placeholder': 'Что интересеного у вас сегодня?',
                 'maxlength': 500,
-                'minlength': 10
+                'minlength': 10,
+                'id': 'textarea'
             }),
             'image': forms.FileInput(attrs={"hidden": "hidden", "id":"real-input"})
         }

@@ -12,9 +12,13 @@
             {% csrf_token %}
             {% for f in form %}
                 <div class="main-registration__form_input">
-                    <label for="{{ f.id_for_label }}">{{ f.label }}</label>
-                    <br>
-                    {{ f }}
+                    <div><label for="{{ f.id_for_label }}">{{ f.label }}</label></div>
+                    {% if f.errors %}
+                        <div class="main-registration__form-error">{{ f.errors }}</div>
+                        <div class="main-registration__form-input-error">{{ f }}</div>
+                    {% else %}
+                        {{ f }}
+                    {% endif %}
                 </div>
             {% endfor %}
             <button class="orange-button" type="submit">Войти</button>
