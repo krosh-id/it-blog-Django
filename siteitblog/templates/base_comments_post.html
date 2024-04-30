@@ -6,13 +6,15 @@
         <div class="comment" >
             <img class="image-icon" src="{{ comment.author.img }}" alt="" srcset="">
             <div class="comment__text">
-                <span class="main-section__post-name">Зледей британец</span>
+                <span class="main-section__post-name">{{ comment.author.first_name }} {{ comment.author.last_name }}</span>
                 <span class="main-section__post-text">{{ comment.text }}</span>
                 <span class="comment__date">
                     {{ comment.date_created|date:"j F Y" }} в {{ comment.date_created|time:"H:i" }}
                     <span class="comment__like">
+                    <button class="button-icon button-icon-like" data-id="{{ comment.id }}" data-type="comment">
                         <img src="{% static 'blog/icon/like_comment.svg' %}" alt="">
-                        {{ comment.reaction.like }}
+                    </button>    
+                    <span id="likes-count-comment-{{ comment.id }}">{{ comment.total_likes }}</span>
                     </span>
                 </span>
                 <!-- Добавить новые стили -->

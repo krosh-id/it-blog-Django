@@ -1,5 +1,5 @@
 {% load static %}
-<div class="main-section__post lenta">
+<div class="main-section__post lenta" id="{{ post.id }}">
 {#    блок автора поста #}
     <div class="main-section__post-from">
         <img class="image-icon" src="{{ post.author.img }}" alt="" srcset="">
@@ -28,14 +28,18 @@
 {# строка реакций #}
     <div class="main-section__reaction">
         <div>
-            <button class="button-icon"><img src="{% static 'blog/icon/Like.svg' %}"></button>
-            <span>{{ post.reaction.like }}</span>
+            <button class="button-icon button-icon-like" data-id="{{ post.id }}" data-type="post">
+                <img src="{% static 'blog/icon/Like.svg' %}">
+            </button>
+            <span id="likes-count-post-{{ post.id }}">{{ post.total_likes }}</span>
             <button class="button-icon"><img src="{% static 'blog/icon/молния.svg' %}"></button>
             <span>{{ post.reaction.lightning }}</span>
         </div>
         <div>
-            <button class="button-icon"><img src="{% static 'blog/icon/коммент.svg' %}"></button>
-            <span>{{ post.reaction.comments }}</span>
+            <button class="button-icon">
+                <a href="{% url 'post' post.id %}"><img src="{% static 'blog/icon/коммент.svg' %}"></a>
+            </button>
+            <span>{{ post.total_comments }}</span>
         </div>
     </div>
 </div>

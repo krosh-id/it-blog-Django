@@ -1,10 +1,15 @@
+import json
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Model
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, View
 
 from blog.forms import AddPostLentaForm, AddMyPostForm, AddCommentForm
-from blog.models import Post, Category
+from blog.models import Post, Category, Comment
+from blog.services import add_like, remove_like
 
 menu = [
     {'title': 'Профиль', 'icon': './icon/user.svg', 'url_name': 'profile'},
@@ -24,7 +29,22 @@ profile = {
     "img": "",
     "status": "в поисках error 404"
 }
+
+
 # сделать миксин который оформляет данные о пользователе (profile)
+class BaseLikeReaction(LoginRequiredMixin, View):
+    model = Model
+
+    def post(self, request, *args, **kwargs):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            body_request = request.body.decode("utf-8")
+            model = self.model.objects.get(id=json.loads(body_request).get('modelId'))
+            if model.get_is_liked(request.user):
+                remove_like(model, self.request.user)
+                return JsonResponse({'status': 'remove'})
+            else:
+                add_like(model, self.request.user)
+                return JsonResponse({'status': 'add'})
 
 
 class LentaView(LoginRequiredMixin, CreateView):
@@ -34,7 +54,10 @@ class LentaView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.all().select_related('author')
+        posts = Post.objects.all().select_related('author')
+        context['posts'] = posts
+        for post in posts:
+            post.get_is_liked(self.request.user)
         context['profile'] = profile
         return context
 
@@ -71,9 +94,11 @@ class ShowPostView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['post'] = Post.objects.get(id=self.kwargs.get('post_id'))
+        post = Post.objects.get(id=self.kwargs.get('post_id'))
+        context['post'] = post
         context['comments'] = context['post'].comment.all()
         context['profile'] = profile
+        context['post_liked'] = post.get_is_liked(user=self.request.user)
         return context
 
     def form_valid(self, form):
@@ -115,3 +140,13 @@ class ProfileView(LoginRequiredMixin, ListView):
             "status": "в поисках error 404"
         }
         return context
+
+
+class LikePostView(BaseLikeReaction):
+    model_id = 'post_id'
+    model = Post
+
+
+class LikeCommentView(BaseLikeReaction):
+    model_id = 'comment_id'
+    model = Comment

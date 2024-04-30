@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'blog/js/reaction_btn_script.js' %}"></script>
+{% endblock %}
 {% block meta %}
     <title>Пост</title>
 	<meta name="description" content="Пост в IT-hub">
