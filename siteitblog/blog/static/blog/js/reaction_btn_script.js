@@ -42,7 +42,6 @@ $(document).ready(function() {
             dataType: 'json', // Указываем, что ожидаем JSON-ответ
             success: function(response) {
                 let newLikesCount = 0
-                console.log(response['status']);
                 if (response['status'] === 'remove') {
                     newLikesCount = currentLikes - 1;
                 }else{
