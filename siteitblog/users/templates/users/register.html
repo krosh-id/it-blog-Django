@@ -8,7 +8,7 @@
 {% block form %}
     <div class="main-registration__form">
         <img src="{% static 'blog/img/logo.svg' %}" alt="" srcset="">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% for f in form %}
                 <div class="main-registration__form_input">

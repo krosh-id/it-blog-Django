@@ -71,7 +71,6 @@ class Comment(models.Model):
         return self.liked
 
 
-
 class Post(models.Model):
     liked = False
 
