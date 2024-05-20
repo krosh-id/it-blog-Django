@@ -133,6 +133,36 @@ body {
   color: #B2B1B1;
   font-size: 14px;
 }
+.main-section__friends__advert {
+  padding: 9px 0;
+}
+.main-section__friends__advert p {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+.main-section__friends__advert hr {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.main-section__friends__advert a {
+  color: #B2B1B1;
+  font-size: 12px;
+}
+.main-section__friends__advert-concact {
+  background-color: #E8820A;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 5px;
+  padding: 5px;
+}
+.main-section__friends__advert-concact p {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+.main-section__friends__advert-concact p:last-child {
+  margin-bottom: 0;
+}
 .main-section__one-friend {
   display: flex;
   flex-direction: column;
@@ -173,7 +203,7 @@ body {
 }
 .main-section__input-my-post {
   display: flex;
-  padding: 10px 29px 5px 29px;
+  padding: 0 29px 5px 29px;
   height: 175px;
 }
 .main-section__input-my-post img {
@@ -193,14 +223,14 @@ body {
   outline: 1px solid #B2B1B1;
   font-size: 14px;
   font-weight: 400;
-  width: 466px;
+  width: 505px;
   resize: none;
   color: #FFFFFF;
   background-color: rgba(255, 255, 255, 0);
 }
 .main-section__input-label {
   display: flex;
-  padding: 4px 55px 4px 64px;
+  padding: 4px 55px 4px 29px;
   justify-content: space-between;
 }
 .main-section__input-label label, .main-section__input-label span {
@@ -211,7 +241,7 @@ body {
 .main-section__input-post {
   display: flex;
   height: 65px;
-  padding: 10px 29px 5px 29px;
+  padding: 0 29px 0 29px;
 }
 .main-section__input-post img {
   margin-right: 0;
@@ -222,7 +252,7 @@ body {
   outline: none;
   font-size: 14px;
   font-weight: 400;
-  width: 100%;
+  width: 494px;
   resize: none;
   color: #FFFFFF;
   background-color: rgba(255, 255, 255, 0);
@@ -323,12 +353,29 @@ body {
   font-size: 16px;
   font-weight: 700;
 }
+.main-section__title-info {
+  padding: 15px 0 0 0 !important;
+  font-weight: 500;
+}
+.main-section__title-info__text-title {
+  color: #C4C4C4;
+  font-size: 14px;
+  padding: 0 29px 15px 29px;
+}
+.main-section__title-info__text {
+  text-align: justify;
+  padding: 15px 29px;
+  border-top: 1px solid #B2B1B1;
+}
+.main-section__title-info .main-section__post {
+  border-radius: 0 0 5px 5px;
+}
 .main-section__profile {
   display: flex;
   flex-direction: row !important;
   justify-content: flex-start;
   align-items: center;
-  height: 70px;
+  height: 100px;
 }
 .main-section__profile img {
   width: 50px;
@@ -546,6 +593,10 @@ body {
 .main-registration__form-error {
   color: #d10707;
   font-size: 12px;
+}
+
+.size-slider {
+  height: 258px;
 }
 
 /*# sourceMappingURL=style.css.map */

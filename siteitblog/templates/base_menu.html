@@ -9,12 +9,6 @@
             <span class="menu-list__text">Профиль</span>
         </a>
     </li>
-    <li class="main-section__list-item menu-list__item">
-        <a href="{% url 'my-post' profile.id %}">
-            <img class="menu-list__img" src="{% static 'blog/icon/my post.svg' %}" />
-            <span class="menu-list__text">Мои посты</span>
-        </a>
-    </li>
     <li class="main-section__list-item menu-list__item menu-list__item-hidden">
         <a href="{% url 'lenta' %}">
             <img class="menu-list__img" src="{% static 'blog/icon/lenta.svg' %}" />
@@ -34,6 +28,13 @@
                 {% endfor %}
             </ul>
         </div>
+    </li>
+
+    <li class="main-section__list-item menu-list__item">
+        <a href="{% url  'about_company' %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/about_company.svg' %}" />
+            <span class="menu-list__text">О компании</span>
+        </a>
     </li>
 
     <li>

@@ -1,15 +1,17 @@
 import json
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Model
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, View
+from django.views.generic import CreateView, ListView, View, TemplateView
 
 from blog.forms import AddPostLentaForm, AddMyPostForm, AddCommentForm
 from blog.models import Post, Category, Comment
 from blog.services import add_like, remove_like
+from siteitblog import settings
 
 menu = [
     {'title': 'Профиль', 'icon': './icon/user.svg', 'url_name': 'profile'},
@@ -22,13 +24,6 @@ friends = [
     {'id': 124, 'name': 'Леди Баг', 'img': 'luntik.png'},
     {'id': 125, 'name': 'Злодей Британец', 'img': 'симпсон.png'},
 ]
-
-profile = {
-    "id": 1,
-    "name": "Владислав Павлович",
-    "img": "",
-    "status": "в поисках error 404"
-}
 
 
 # сделать миксин который оформляет данные о пользователе (profile)
@@ -58,7 +53,7 @@ class LentaView(LoginRequiredMixin, CreateView):
         context['posts'] = posts
         for post in posts:
             post.get_is_liked(self.request.user)
-        context['profile'] = profile
+        context['profile'] = self.request.user
         return context
 
     def form_valid(self, form):
@@ -77,7 +72,7 @@ class ShowByCategoryView(LoginRequiredMixin, CreateView):
         category = get_object_or_404(Category, slug=self.kwargs.get('cat_slug'))
         context['cat_slug'] = self.kwargs.get('cat_slug')
         context['posts'] = Post.objects.filter(category=category).all().select_related('author')
-        context['profile'] = profile
+        context['profile'] = self.request.user
         return context
 
     def form_valid(self, form):
@@ -97,7 +92,7 @@ class ShowPostView(LoginRequiredMixin, CreateView):
         post = Post.objects.get(id=self.kwargs.get('post_id'))
         context['post'] = post
         context['comments'] = context['post'].comment.all()
-        context['profile'] = profile
+        context['profile'] = self.request.user
         context['post_liked'] = post.get_is_liked(user=self.request.user)
         return context
 
@@ -107,39 +102,44 @@ class ShowPostView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ShowMyPostsView(LoginRequiredMixin, CreateView):
-    form_class = AddMyPostForm
-    template_name = 'blog/my_post.html'
-
-    # success_url = reverse_lazy('post')
+class AboutCompanyView(TemplateView):
+    template_name = "blog/about_company.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile'] = profile
-        context['posts'] = Post.objects.filter(author=self.request.user)
+        company = get_user_model().objects.get(username="company")
+        posts = Post.objects.filter(author=company).all()
+        context['profile'] = {
+            "id": company.id,
+            "name": company.first_name + ' ' + company.last_name,
+            "photo": company.photo if company.photo else settings.DEFAULT_USER_IMAGE,
+            "status": company.status if company.status else '',
+        }
+        context["about_company"] = posts.last()
+        context["posts"] = posts
+        return context
+
+
+class ProfileView(LoginRequiredMixin, CreateView):
+    form_class = AddMyPostForm
+    template_name = "blog/profile.html"
+    context_object_name = 'posts'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.filter(author=self.request.user).all()
+        user = self.request.user
+        context['profile'] = {
+            "id": user.id,
+            "name": user.first_name+' '+user.last_name,
+            "photo": user.photo if user.photo else settings.DEFAULT_USER_IMAGE,
+            "status": user.status if user.status else '',
+        }
         return context
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
-
-class ProfileView(LoginRequiredMixin, ListView):
-    template_name = "blog/profile.html"
-    context_object_name = 'posts'
-
-    def get_queryset(self):
-        return Post.objects.filter(author=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['profile'] = {
-            "id": self.request.user.id,
-            "name": self.request.user.first_name+' '+self.request.user.last_name,
-            "img": "",
-            "status": "в поисках error 404"
-        }
-        return context
 
 
 class LikePostView(BaseLikeReaction):

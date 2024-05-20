@@ -2,7 +2,7 @@
 <div class="main-section__post lenta" id="{{ post.id }}">
 {#    блок автора поста #}
     <div class="main-section__post-from">
-        <img class="image-icon" src="{{ post.author.img }}" alt="" srcset="">
+        <img class="image-icon" src="{{ post.author.photo.url }}" alt="" srcset="">
         <div class="main-section__post-info">
             <span class="main-section__post-name">{{ post.author.first_name }} {{ post.author.last_name }}</span>
             <span class="main-section__post-date">{{ post.date_created|date:"j F Y" }} в {{ post.date_created|time:"H:i" }}</span>

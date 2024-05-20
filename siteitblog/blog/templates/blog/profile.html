@@ -1,19 +1,62 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block js %}
+    <script src="{% static 'blog/js/scripts.js' %}"></script>
+{% endblock %}
+
 {% block meta %}
     <title>Профиль</title>
 	<meta name="description" content="Профиль IT-hub">
 {% endblock %}
+
 {% block content %}
     <div class="main-section__profile lenta">
-        <img class="image-icon" src="{% static 'blog/img/аватарка.png' %}" alt="" srcset="">
+        <img class="image-icon" src="{{ profile.photo.url }}" alt="" srcset="">
         <div class="main-section__profile-info">
             <span class="main-section__profile-name">{{ profile.name }}</span>
             <span class="main-section__profile-status">{{ profile.status }}</span>
         </div>
         <button class="orange-button">редактировать</button>
     </div>
+        <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="main-section__new-my-post lenta">
+            <div class="main-section__input-my-post">
+                {{ form.text }}
+                {{ form.image }}
+                <label for="real-input" class="custom-file-upload">
+                    <img src="{% static 'blog/icon/upload.svg' %}"  alt=""/>
+                </label>
+            </div>
+            <div class="main-section__input-label">
+                <label>Изображений загружено: 
+                    <span id="counter-image">0</span>
+                    /
+                    1 </label>
+                <span>
+                    <span id="counter-input">0</span>
+                    <span>/</span>
+                    <span>500</span>
+                </span>
+            </div>
+            <div class="main-section__share-post">
+                {{ form.category }}
+                <button class="orange-button" type="submit">запостить</button>
+            </div>
+        </div>
+    </form>
+    
     {% for post in posts %}
-        {% include 'base_post.html' with post=post only %}
+        {% if forloop.first %}
+            <div class="main-section__title-info lenta">
+                <span class="main-section__title-info__text-title"> Ваши записи </span>
+                {% include 'base_post.html' with post=post only %}
+            </div>
+        {% else %}
+            {% include 'base_post.html' with post=post only %}
+        {% endif %}
     {% endfor %}
+    
+    
 {% endblock %}

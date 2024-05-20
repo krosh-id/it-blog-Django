@@ -124,6 +124,31 @@ body
 		min-height: 44px
 		color: #B2B1B1
 		font-size: 14px
+		&__advert
+			padding: 9px 0
+			p
+				font-size: 12px
+				margin-bottom: 5px
+			hr
+				margin-top: 0
+				margin-bottom: 5px
+			a
+				color: #B2B1B1
+				font-size: 12px
+
+		&__advert-concact
+			background-color: #E8820A
+			border-radius: 5px
+			text-align: center
+			margin-bottom: 5px
+			padding: 5px
+			p
+				font-size: 20px
+				font-weight: 700
+				color: white
+				&:last-child
+					margin-bottom: 0
+
 
 	&__one-friend
 		display: flex
@@ -165,7 +190,7 @@ body
 
 	&__input-my-post
 		display: flex
-		padding: 10px 29px 5px 29px
+		padding: 0 29px 5px 29px
 		height: 175px
 		& img
 			margin-right: 7px
@@ -183,14 +208,14 @@ body
 			outline: 1px solid #B2B1B1
 			font-size: 14px
 			font-weight: 400
-			width: 466px
+			width: 505px
 			resize: none
 			color: #FFFFFF
 			background-color: #ffffff00
 
 	&__input-label
 		display: flex
-		padding: 4px 55px 4px 64px
+		padding: 4px 55px 4px 29px
 		justify-content: space-between
 		& label, span
 			font-weight: 700
@@ -200,7 +225,7 @@ body
 	&__input-post
 		display: flex
 		height: 65px
-		padding: 10px 29px 5px 29px
+		padding: 0 29px 0 29px
 		& img
 			margin-right: 0
 		& textarea
@@ -209,7 +234,7 @@ body
 			outline: none
 			font-size: 14px
 			font-weight: 400
-			width: 100%
+			width: 494px
 			resize: none
 			color: #FFFFFF
 			background-color: #ffffff00
@@ -294,6 +319,7 @@ body
 
 
 	&__post-img
+
 		& img
 			border-radius: 5px
 			max-width: 100%
@@ -310,13 +336,27 @@ body
 			font-size: 16px
 			font-weight: 700
 
+	&__title-info
+		padding: 15px 0 0 0 !important
+		font-weight: 500
+		&__text-title
+			color: #C4C4C4
+			font-size: 14px
+			padding: 0 29px 15px 29px
+		&__text
+			text-align: justify
+			padding: 15px 29px
+			border-top: 1px solid #B2B1B1
+		.main-section__post
+			border-radius: 0 0 5px 5px
+
 	//раздел профиль
 	&__profile
 		display: flex
 		flex-direction: row !important
 		justify-content: flex-start
 		align-items: center
-		height: 70px
+		height: 100px
 
 		& img
 			width: 50px
@@ -531,3 +571,7 @@ body
 	&__form-error
 		color: #d10707
 		font-size: 12px
+
+
+.size-slider
+	height: 258px

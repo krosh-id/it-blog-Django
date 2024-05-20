@@ -13,7 +13,7 @@
         {% csrf_token %}
         <div class="main-section__new-post lenta">
             <div class="main-section__input-post">
-                <img class="image-icon" src="{{ profile.img }}" />
+                <img class="image-icon" src="{{ profile.photo.url }}" />
                 {{ form.text }}
             </div>
             <div class="main-section__share-post">

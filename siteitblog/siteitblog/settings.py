@@ -139,4 +139,4 @@ LOGOUT_REDIRECT_URL = 'users:register'
 
 AUTH_USER_MODEL = "users.User"
 
-DEFAULT_USER_IMAGE = MEDIA_URL + "users/default.png"
+DEFAULT_USER_IMAGE = MEDIA_URL + "users/default.jpg"
