@@ -9,11 +9,13 @@ from cart.cart import Cart
 from cart.models import Product
 
 
+# добавить декоратор который добавляет профиль пользователя
 class CardListAddDeleteView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         cart = Cart(request)
-        return render(request, 'cart/cart_sum.html', {'cart': cart})
+        profile = self.request.user
+        return render(request, 'cart/cart_sum.html', {'cart': cart, 'profile': profile})
 
     def post(self, request, *args, **kwargs):
         """
