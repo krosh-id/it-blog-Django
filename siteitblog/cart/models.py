@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class CategoryProduct(models.Model):
@@ -8,6 +9,9 @@ class CategoryProduct(models.Model):
     class Meta:
         verbose_name = "Категория товаров"
         verbose_name_plural = "Категории товаров"
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -20,9 +24,12 @@ class Product(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
-    category = models.ForeignKey(to=CategoryProduct, on_delete=models.CASCADE, related_name="products")
+    category = models.ForeignKey(CategoryProduct, on_delete=models.CASCADE, related_name="products")
 
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
         ordering = ['-date_created']
+
+    def get_absolute_url(self):
+        return reverse('product', kwargs={'post_id': self.id})

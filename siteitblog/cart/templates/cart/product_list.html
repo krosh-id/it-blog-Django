@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load cart_tags %}
+{% load static %}
+
+{% block meta %}
+    
+{% endblock %}
+{#main-section__content#}
+{% block content %}
+    <div class="main-section__products items-named">
+        <div class="items-named__header">
+            <select name="" id="" class="main-section__select-category-btn">
+                <option value selected>Выбрать категорию</option>
+                {% getcatsproduct as categories %}
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            <button class="button-icon"><img src="{% static 'blog/icon/korzina.svg' %}"></button>
+        </div>
+        <div class="main-section__products__list">
+        
+            {% for product in products %}
+                <div class="items-named__product">
+                    <img src="{{ product.image.url }}" alt="" class="items-named__product-image">
+                    <p class="items-named__product-price">{{ product.price }} ₽</p>
+                    <p class="items-named__product-title"> {{ product.name|truncatechars_html:47 }} </p>
+                    <button class="orange-button items-named__product-button">Купить</button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

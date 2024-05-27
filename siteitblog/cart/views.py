@@ -2,11 +2,12 @@ import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.views.generic import View, ListView
+from django.views.generic import View, ListView, DetailView
 from django.shortcuts import get_object_or_404, render
 
 from cart.cart import Cart
 from cart.models import Product
+from siteitblog import settings
 
 
 # добавить декоратор который добавляет профиль пользователя
@@ -15,7 +16,7 @@ class CardListAddDeleteView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         cart = Cart(request)
         profile = self.request.user
-        return render(request, 'cart/cart_sum.html', {'cart': cart, 'profile': profile})
+        return render(request, 'cart/cart.html', {'cart': cart, 'profile': profile})
 
     def post(self, request, *args, **kwargs):
         """
@@ -46,18 +47,27 @@ class CardListAddDeleteView(LoginRequiredMixin, View):
         pass
 
 
-# Create your views here.
 class ListProductView(LoginRequiredMixin, ListView):
-    template_name = "cart/cart.html"
+    template_name = "cart/product_list.html"
     context_object_name = 'products'
     allow_empty = False
 
     def get_queryset(self):
-        # добавить проверку товаров из корзины
-        return Product.objects.filter(category__slug=self.kwargs['cat_slug']).select_related('category')
+        if self.kwargs.get('cat_slug'):
+            # добавить проверку товаров из корзины
+            return Product.objects.filter(category__slug=self.kwargs['cat_slug']).all()
+        else:
+            return Product.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category = context['products'][0].category
         context['cat_selected'] = category.name
+        context['profile'] = self.request.user
+        context['cart'] = self.request.session.get(settings.CART_SESSION_ID)
+        print(context['cart'])
         return context
+
+
+class ProductView(LoginRequiredMixin, DetailView):
+    pass
