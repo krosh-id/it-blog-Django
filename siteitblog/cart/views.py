@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 from django.views.generic import View, ListView, DetailView
 from django.shortcuts import get_object_or_404, render
 
@@ -23,25 +23,22 @@ class CardListAddDeleteView(LoginRequiredMixin, View):
         Добавление и обновление количества товара в сессии или корзины.
         """
         cart = Cart(request)
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            body_request = request.body.decode("utf-8")
-            product = get_object_or_404(Product, id=json.loads(body_request).get('productId'))
-            quantity = json.loads(body_request).get('quantity')
-            cart.add(product=product,
-                     quantity=quantity
-                     )
-            return JsonResponse({'status': 'add'})
+        body_request = request.body.decode("utf-8")
+        product = get_object_or_404(Product, id=json.loads(body_request).get('productId'))
+        quantity = json.loads(body_request).get('quantity')
+        cart.add(product=product, quantity=quantity)
+
+        return JsonResponse({'status': 'add'})
 
     def delete(self, request, *args, **kwargs):
         """
         Удаление товара из сессии или корзины
         """
         cart = Cart(request)
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            body_request = request.body.decode("utf-8")
-            product = get_object_or_404(Product, id=json.loads(body_request).get('productId'))
-            cart.remove(product)
-            return JsonResponse({'status': 'remove'})
+        body_request = request.body.decode("utf-8")
+        product = get_object_or_404(Product, id=json.loads(body_request).get('productId'))
+        cart.remove(product)
+        return JsonResponse({'status': 'remove'})
 
     def patch(self, request, *args, **kwargs):
         pass
@@ -64,7 +61,7 @@ class ListProductView(LoginRequiredMixin, ListView):
         category = context['products'][0].category
         context['cat_selected'] = category.name
         context['profile'] = self.request.user
-        context['cart'] = self.request.session.get(settings.CART_SESSION_ID)
+        context['cart'] = [int(item) for item in self.request.session.get(settings.CART_SESSION_ID).keys()]
         print(context['cart'])
         return context
 

@@ -6,13 +6,15 @@ from cart.models import Product
 
 # Корзина товаров для сессии
 class Cart:
+    cart = None
+
     def __init__(self, request):
         """
         Инициализировать корзину.
         """
         self.session = request.session
-        cart = self.session.get(settings.CART_SESSION_ID)
-        if not cart:
+        self.cart = self.session.get(settings.CART_SESSION_ID)
+        if not self.cart:
             # сохранить пустую корзину в сеансе
             cart = self.session[settings.CART_SESSION_ID] = {}
             self.cart = cart
@@ -43,7 +45,7 @@ class Cart:
         """
         Добавить товар в корзину либо обновить его количество.
         """
-        product_id = str(product.id)
+        product_id = product.id
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0,
                                      'price': str(product.price)}

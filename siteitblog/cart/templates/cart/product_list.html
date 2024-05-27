@@ -2,6 +2,11 @@
 {% load cart_tags %}
 {% load static %}
 
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'blog/js/action_product_btn.js' %}"></script>
+{% endblock %}
+
 {% block meta %}
     
 {% endblock %}
@@ -19,13 +24,16 @@
             <button class="button-icon"><img src="{% static 'blog/icon/korzina.svg' %}"></button>
         </div>
         <div class="main-section__products__list">
-        
             {% for product in products %}
-                <div class="items-named__product">
+                <div class="items-named__product" id="{{ product.id }}">
                     <img src="{{ product.image.url }}" alt="" class="items-named__product-image">
                     <p class="items-named__product-price">{{ product.price }} ₽</p>
                     <p class="items-named__product-title"> {{ product.name|truncatechars_html:47 }} </p>
-                    <button class="orange-button items-named__product-button">Купить</button>
+                    {% if product.id in cart %}
+                        <button class="orange-button items-named__product-button remove-btn" data-in-cart="true">Добавлено в корзину</button>
+                    {% else %}
+                        <button class="orange-button items-named__product-button" data-in-cart="false">Купить</button>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
