@@ -45,7 +45,9 @@ class BaseLikeReaction(LoginRequiredMixin, View):
 class LentaView(LoginRequiredMixin, CreateView):
     form_class = AddPostLentaForm
     template_name = 'blog/lenta.html'
-    success_url = reverse_lazy('profile')
+
+    def get_success_url(self):
+        return reverse_lazy('profile', args=[self.request.user.id])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,7 +60,6 @@ class LentaView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.post = self.get_context_data()['post']
         return super().form_valid(form)
 
 

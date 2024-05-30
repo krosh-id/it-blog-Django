@@ -1,9 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
     
 {% endblock %}
 
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'blog/js/action_product_btn.js' %}"></script>
+{% endblock %}
+
 {% block content %}
+
+    <div class="main-section__products items-named">
+        <div class="items-named__header">
+            <p class="items-named__header-title">Корзина</p>
+            <a href="{% url 'cart:product_list_all' %}"><img class="button-icon" src="{% static 'blog/icon/buy1.svg' %}"></a>
+        </div>
+
+        {% if not cart %}
+            <div class="items-named__empty-cart">
+                <p>Ваша корзина пуста (</p>
+            </div>
+        {% else %}
+            {% for item in cart %}
+                <div class="items-named__product-cart" id="{{ item.product.id }}">
+                    <a href="{% url 'cart:product_list_all' %}"><img class="items-named__product-cart__img" src="{{ item.product.image.url }}" alt=""></a>
+                    <div class="items-named__product-cart__dsc">
+                        <p class="items-named__product-cart__dsc-title">{{ item.product.name }}</p>
+                        <p class="items-named__product-cart__dsc-date">Срок принятия заказа: {{ item.product.processing_date }}</p>
+                    </div>
+                    <div class="items-named__product-cart__price">
+                        <div>
+                            <p class="items-named__product-cart__price-value">{{ item.total_price }}₽</p>
+                            <p class="items-named__product-cart__price-dsc">за услугу</p>
+                        </div>
+                        <button class="button-icon items-named__cart-button-remove"><img src="{% static 'blog/icon/remove.svg' %}"></button>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="items-named__product-cart__total">
+                <p>Итого: <span class="items-named__product-cart__total-value">{{ cart.total_products_price }}</span>₽</p>
+                <button class="orange-button items-named__product-cart-btn">Оформить</button>
+            </div>
+        {% endif %}
+    </div>
 
 {% endblock %}

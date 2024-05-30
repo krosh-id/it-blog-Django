@@ -7,6 +7,7 @@ from cart.models import Product
 # Корзина товаров для сессии
 class Cart:
     cart = None
+    total_products_price = None
 
     def __init__(self, request):
         """
@@ -24,6 +25,7 @@ class Cart:
         Прокрутить товарные позиции корзины в цикле и
         получить товары из базы данных.
         """
+        self.total_products_price = 0
         product_ids = self.cart.keys()
         # получить объекты product и добавить их в корзину
         products = Product.objects.filter(id__in=product_ids)
@@ -33,6 +35,7 @@ class Cart:
         for item in cart.values():
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
+            self.total_products_price += item['total_price']
             yield item
 
     def __len__(self):

@@ -21,7 +21,7 @@
                     <option value="{{ cat.id }}">{{ cat.name }}</option>
                 {% endfor %}
             </select>
-            <button class="button-icon"><img src="{% static 'blog/icon/korzina.svg' %}"></button>
+            <a href="{% url 'cart:cart' %}"><img src="{% static 'blog/icon/korzina.svg' %}"></a>
         </div>
         <div class="main-section__products__list">
             {% for product in products %}

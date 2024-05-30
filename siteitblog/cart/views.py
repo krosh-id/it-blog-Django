@@ -15,8 +15,14 @@ class CardListAddDeleteView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         cart = Cart(request)
+        for item in cart:
+            print(item['product'], item['price'], item['quantity'], item['total_price'])
         profile = self.request.user
-        return render(request, 'cart/cart.html', {'cart': cart, 'profile': profile})
+        context_data = {
+            'cart': cart,
+            'profile': profile
+        }
+        return render(request, 'cart/cart.html', context_data)
 
     def post(self, request, *args, **kwargs):
         """
@@ -25,8 +31,8 @@ class CardListAddDeleteView(LoginRequiredMixin, View):
         cart = Cart(request)
         body_request = request.body.decode("utf-8")
         product = get_object_or_404(Product, id=json.loads(body_request).get('productId'))
-        quantity = json.loads(body_request).get('quantity')
-        cart.add(product=product, quantity=quantity)
+        # quantity = json.loads(body_request).get('quantity')
+        cart.add(product=product) # quantity=quantity
 
         return JsonResponse({'status': 'add'})
 
@@ -61,8 +67,10 @@ class ListProductView(LoginRequiredMixin, ListView):
         category = context['products'][0].category
         context['cat_selected'] = category.name
         context['profile'] = self.request.user
-        context['cart'] = [int(item) for item in self.request.session.get(settings.CART_SESSION_ID).keys()]
-        print(context['cart'])
+        cart = self.request.session.get(settings.CART_SESSION_ID)
+        if cart:
+            context['cart'] = [int(item) for item in self.request.session.get(settings.CART_SESSION_ID).keys()]
+        print(context.get('cart'))
         return context
 
 

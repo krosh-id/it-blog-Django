@@ -4,7 +4,7 @@ from .views import CardListAddDeleteView, ListProductView, ProductView
 app_name = 'cart'
 
 urlpatterns = [
-    path('', CardListAddDeleteView.as_view(), name='cart_sum'),
+    path('', CardListAddDeleteView.as_view(), name='cart'),
     path('add/', CardListAddDeleteView.as_view(), name='cart_add'),
     path('remove/', CardListAddDeleteView.as_view(), name='cart_remove'),
     path('list/', ListProductView.as_view(), name='product_list_all'),
