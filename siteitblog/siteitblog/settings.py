@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'debug_toolbar',
     'cart',
+    'orders'
 ]
 
 MIDDLEWARE = [

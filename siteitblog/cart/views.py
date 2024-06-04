@@ -70,7 +70,6 @@ class ListProductView(LoginRequiredMixin, ListView):
         cart = self.request.session.get(settings.CART_SESSION_ID)
         if cart:
             context['cart'] = [int(item) for item in self.request.session.get(settings.CART_SESSION_ID).keys()]
-        print(context.get('cart'))
         return context
 
 

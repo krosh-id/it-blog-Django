@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block js %}
+    <script src="{% static 'blog/js/action_order.js' %}"></script>
+{% endblock %}
+
+{% block meta %}
+    <title>Заказы</title>
+	<meta name="description" content="Заказы в компании IT-hub">
+{% endblock %}
+{#main-section__content#}
+{% block content %}
+<div class="main-section__products items-named">
+    <div class="items-named__header order_header">
+        <p class="items-named__header-title">Список заказов</p>
+{#        добавить сортировку в listview #}
+        <div class="items-named__header__sort">
+            <p>Сортировка по: 
+                <select name="" id="" class="main-section__select-category-btn">
+                <option value selected>Дате</option>
+            </select>
+            </p>
+        </div>
+        <a href="{% url 'cart:product_list_all' %}"><img class="button-icon" src="{% static 'blog/icon/buy1.svg' %}"></a>
+    </div>
+    {% if not orders %}
+        <div class="items-named__empty-cart">
+            <p>Заказов ещё не было</p>
+        </div>
+    {% endif %} 
+    {% for order in orders %}
+        <div class="items-named__product-orders" id="{{ order.id }}">
+            <div class="items-named__product-orders__info">
+                <div>
+                    <p class="items-named__product-orders__title">Заказ от {{ order.date|date:'j E Y' }}</p>
+                    {% if order.status == 'PROCESSING' %}
+                    	<p class="items-named__product-orders__dsc">Статус заказа: <span class="color-yellow">{{order.get_status_display}}</span></p>
+                    {% elif order.status == 'WORK' %}
+                        	<p class="items-named__product-orders__dsc">Статус заказа: <span class="color-orange">{{order.get_status_display}}</span></p>
+                    {% elif order.status == 'COMPLETED' %}
+                        	<p class="items-named__product-orders__dsc">Статус заказа: <span class="color-green">{{order.get_status_display}}</span></p>
+                    {% elif order.status == 'CANCELED' %}
+                        	<p class="items-named__product-orders__dsc">Статус заказа: <span class="color-red">{{order.get_status_display}}</span></p>
+                    {% endif %} 
+                    <p class="items-named__product-orders__dsc">№ {{ order.id }}</p>
+                </div>
+                <div>
+                    {% if order.date_complete %}
+                        <p class="items-named__product-orders__dsc">Дата выполнения: {{ order.date_complete|date:'d.m.Y' }}</p>
+                    {% else %}
+                        <p class="items-named__product-orders__dsc">Дата выполнения: –</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="items-named__product-orders__price">
+                <p class="items-named__product-cart__price-value">{{ order.total_price }}₽</p>
+                <p class="items-named__product-cart__price-dsc">за услугу</p>
+                <a href="{{ order.get_absolute_url }}">Обсудить заказ</a>
+                {% if order.status == 'PROCESSING' %}
+                	<br>
+                    <button class="button-icon items-named__order-button-remove"><img src="{% static 'blog/icon/remove.svg' %}"></button>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>    
+    
+{% endblock %}

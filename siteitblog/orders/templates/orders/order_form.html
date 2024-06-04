@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block js %}
+
+{% endblock %}
+
+{% block meta %}
+    <title>Оформление заказа</title>
+	<meta name="description" content="Оформление заказа в компании IT-hub">
+{% endblock %}
+{#main-section__content#}
+{% block content %}
+<div class="main-section__products items-named">
+    <div class="items-named__header">
+        <p class="items-named__header-title">Оформление заказа</p>
+        <a href="{% url 'cart:product_list_all' %}"><img class="button-icon" src="{% static 'blog/icon/buy1.svg' %}"></a>
+    </div>
+    <div class="items-named__form">
+         <form method="post">
+        {% csrf_token %}
+            {% for f in form %}
+                <div class="main-registration__form_input order-form">
+                    <div><label for="{{ f.id_for_label }}">{{ f.label }}</label></div>
+                    {% if f.errors %}
+                        <div class="main-registration__form-error">{{ f.errors }}</div>
+                        <div class="main-registration__form-input-error">{{ f }}</div>
+                    {% else %}
+                        {{ f }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button class="orange-button" type="submit">Заказать</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

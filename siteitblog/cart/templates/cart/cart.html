@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block meta %}
-    
+    <title>Корзина</title>
+	<meta name="description" content="Корзина товаров и услуг IT-hub">
 {% endblock %}
 
 {% block js %}
@@ -11,7 +12,6 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="main-section__products items-named">
         <div class="items-named__header">
             <p class="items-named__header-title">Корзина</p>
@@ -41,7 +41,8 @@
             {% endfor %}
             <div class="items-named__product-cart__total">
                 <p>Итого: <span class="items-named__product-cart__total-value">{{ cart.total_products_price }}</span>₽</p>
-                <button class="orange-button items-named__product-cart-btn">Оформить</button>
+                <a class="orange-button items-named__product-cart-btn" href="{% url 'order:form' %}">Оформить</a>
+
             </div>
         {% endif %}
     </div>

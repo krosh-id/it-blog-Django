@@ -37,6 +37,22 @@
         </a>
     </li>
 
+    <li class="main-section__list-item menu-list__item menu-list__item-hidden">
+        <a href="{% url 'cart:product_list_all' %}">
+            <img class="menu-list__img" src="{% static 'blog/icon/services.svg' %}" />
+            <span class="menu-list__text">Услуги</span>
+            <img src="{% static '/blog/icon/стрелка.svg' %}" />
+        </a>
+{#        Раскрывающийся список #}
+        <div class="menu-list__hidden-category">
+            <ul>
+                <li><a href="{% url 'cart:product_list_all' %}" class="menu-list__text" title="Услуги">Услуги</a></li>
+                <li><a href="{% url 'cart:cart' %}" class="menu-list__text" title="Корзина товаров">Корзина</a></li>
+                <li><a href="{% url 'order:orders' %}" class="menu-list__text" title="Заказы">Заказы</a></li>
+            </ul>
+        </div>
+    </li>
+
     <li>
         <div class="menu-list__line">
             <hr color="#E8820A" size="1">

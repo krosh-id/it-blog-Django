@@ -86,6 +86,7 @@ body
 	color: white
 
 	&__select-category-btn
+		font-size: 14px !important
 		border: none
 		outline: none
 		& option
@@ -397,6 +398,22 @@ body
 			padding: 16px 29px
 			row-gap: 16px
 
+		//чат заказа
+		&__order-chat
+			min-height: 163px
+			border: 1px solid #B2B1B1
+			border-radius: 0 0 5px 5px
+
+			&__date
+				width: 160px
+				height: 21px
+				border: 1px solid #B2B1B1
+				border-radius: 5px
+				padding: 4px 7px
+				font-weight: 400
+				font-size: 13px
+				text-align: center
+
 
 //комментарии
 .comment
@@ -609,6 +626,9 @@ body
 		& a img
 			height: 24px
 			width: 24px
+		&__sort
+			color: #B2B1B1
+			font-size: 14px
 
 
 	&__header-title
@@ -649,6 +669,48 @@ body
 	&__product-button
 		width: 100%
 		border-bottom: 16px
+
+	&__product-cart-btn
+		text-align: center
+		padding-top: 8px
+		&:hover
+			text-decoration: none
+	//order
+	&__product-orders
+		display: flex
+		justify-content: space-between
+		height: 110px
+		padding: 13px 29px
+
+		&__info
+			display: flex
+			flex-direction: column
+			justify-content: space-between
+			& div:first-child p
+				margin-bottom: 7px
+
+
+		&__title
+			font-size: 14px
+		&__dsc
+			font-size: 12px
+			color: #B2B1B1
+		&__price
+			display: flex
+			flex-direction: column
+			align-items: flex-end
+			& .items-named__product-cart__price-dsc
+				margin-bottom: 7px
+			& a
+				font-size: 12px
+				font-weight: 500
+				color: #B2B1B1
+				&:hover
+					color: #E8820A
+
+	//form
+	&__form
+		padding: 12px 29px
 
 	//	Корзина
 	&__empty-cart
@@ -703,10 +765,12 @@ body
 
 		&__price-value
 			font-weight: 400
+			text-align: right
 		&__price-dsc
 			font-weight: 400
 			color: #B2B1B1
 			font-size: 12px
+			text-align: right
 
 		&__total
 			display: flex
@@ -715,8 +779,31 @@ body
 			height: 65px
 			padding: 0 29px
 
+.order_header
+	justify-content: flex-start
+	& .items-named__header-title
+		margin-right: 85px
+	& .items-named__header__sort
+		margin-right: 150px
 
 
 .remove-btn
 		background-color: #B2B1B1 !important
 
+//форма заказа
+.order-form
+	& input
+		width: 50%
+
+.radio-input
+	width: 30% !important
+
+//color for status orders
+.color-orange
+	color: #E8820A
+.color-yellow
+	color: #DBC60A
+.color-green
+	color: #03C32E
+.color-red
+	color: red
