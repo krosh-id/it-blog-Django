@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block js %}
+
+{% endblock %}
+
+{% block meta %}
+    <title>Информация о заказе</title>
+	<meta name="description" content="Информация о заказе IT-hub">
+{% endblock %}
+{#main-section__content#}
+{% block content %}
+    <div class="main-section__products items-named">
+        <div class="items-named__header">
+            <p class="items-named__header-title">Заказ № {{ order.id }}</p>
+            <a href="{% url 'cart:product_list_all' %}"><img class="button-icon" src="{% static 'blog/icon/buy1.svg' %}" alt=""></a>
+        </div>
+        {# Список заказа       #}
+        {% for item in products %}
+            <div class="items-named__product-cart" id="{{ item.id }}">
+                <a href="{% url 'cart:product_list_all' %}"><img class="items-named__product-cart__img" src="{{ item.image.url }}" alt=""></a>
+                <div class="items-named__product-cart__dsc">
+                    <p class="items-named__product-cart__dsc-title">{{ item.name }}</p>
+{#                    <p class="items-named__product-cart__dsc-date">Срок принятия заказа: {{ item.processing_date }}</p>#}
+                </div>
+                <div class="items-named__product-cart__price">
+                    <div>
+                        <p class="items-named__product-cart__price-value">{{ item.price }}₽</p>
+                        <p class="items-named__product-cart__price-dsc">за услугу</p>
+                    </div>
+                    <button class="button-icon items-named__cart-button-remove"><img src="{% static 'blog/icon/remove.svg' %}" alt=""></button>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="items-named__product-cart__total">
+            <p>Итого: <span class="items-named__product-cart__total-value">{{ order.total_price }}</span>₽</p>
+            {% if order.status == 'PROCESSING' %}
+                <p class="items-named__product-orders__dsc">Статус заказа: <span class="color-yellow">{{order.get_status_display}}</span></p>
+            {% elif order.status == 'WORK' %}
+                    <p class="items-named__product-orders__dsc">Статус заказа: <span class="color-orange">{{order.get_status_display}}</span></p>
+            {% elif order.status == 'COMPLETED' %}
+                    <p class="items-named__product-orders__dsc">Статус заказа: <span class="color-green">{{order.get_status_display}}</span></p>
+            {% elif order.status == 'CANCELED' %}
+                    <p class="items-named__product-orders__dsc">Статус заказа: <span class="color-red">{{order.get_status_display}}</span></p>
+            {% endif %}
+            
+            {% if order.date_complete %}
+                        <p class="items-named__product-orders__dsc">Дата выполнения: {{ order.date_complete|date:'d.m.Y' }}</p>
+                    {% else %}
+                        <p class="items-named__product-orders__dsc">Дата выполнения: –</p>
+                    {% endif %}
+        </div>
+    </div>
+    {# Информация #}
+    <div class="main-section__products">
+        <div class="items-named__header items-data">
+            <p class="main-section__order-info-date">дата заказа: {{ order.date|date:'d.m.Y' }}</p>
+        </div>
+        <div class="items-named__form">
+            <div><label class="items-named__label">Имя</label></div>
+            <p class="items-named__field">{{ order.full_name }}</p>
+            <div><label class="items-named__label">Email</label></div>
+            <p class="items-named__field">{{ order.email }}</p>
+            <div><label class="items-named__label">Номер телефона</label></div>
+            <p class="items-named__field">{{ order.mobile_number }}</p>
+            <div><label class="items-named__label">Адрес</label></div>
+            <p class="items-named__field">{{ order.address }}</p>
+        
+            {% if perms.orders.change_order %}
+                <form method="post">
+                    {% csrf_token %}
+                    {% for f in form %}
+                        <div class="main-registration__form_input order-form">
+                            <div><label for="{{ f.id_for_label }}">{{ f.label }}</label></div>
+                            {% if f.errors %}
+                                <div class="main-registration__form-error">{{ f.errors }}</div>
+                                <div class="main-registration__form-input-error">{{ f }}</div>
+                            {% else %}
+                                {{ f }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button class="orange-button" type="submit">Изменить</button>
+                </form>
+            {% else %}
+                <div><label class="items-named__label">Итоговая стоимость</label></div>
+                <p class="items-named__field">{{ order.total_price }}</p>
+                <div><label class="items-named__label">Статус</label></div>
+                <p class="items-named__field">{{ order.get_status_display }}</p>
+                <div><label class="items-named__label">Дата выполнения</label></div>
+                <p class="items-named__field">{{ order.date_complete }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
