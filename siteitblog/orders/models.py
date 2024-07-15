@@ -27,13 +27,14 @@ class Order(models.Model):
     date_complete = models.DateField(null=True, blank=True, default=None, verbose_name="Дата выполнения")
 
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='orders')
+    products = models.ManyToManyField('cart.Product', related_name='products')
 
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
 
     def __str__(self):
-        return self.id
+        return str(self.date)
 
     def get_absolute_url(self):
-        return reverse('order:chat', kwargs={'order_id': self.id})
+        return reverse('order:chat', kwargs={'pk': self.id})

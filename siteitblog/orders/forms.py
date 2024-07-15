@@ -1,5 +1,7 @@
 from django import forms
 
+from orders.models import Order
+
 PAY_CHOICE = (
     ("CREDIT_CART", "Кредитная карта"),
     ("DEBIT_CART", "Дебетовая карта"),
@@ -23,3 +25,19 @@ class OrderForm(forms.Form):
     number_cart = forms.CharField(max_length=16, label="Номер карты")
     validate_period = forms.CharField(max_length=5, label="Срок действия")
     cvv = forms.IntegerField(min_value=0, max_value=999)
+
+
+class EditInformationOrderForm(forms.ModelForm):
+
+    class Meta:
+        model = Order
+        fields = ['total_price', 'status', 'date_complete']
+        # widgets = {
+        #     'text': forms.Textarea(attrs={
+        #         'wrap': 'soft',
+        #         'rows': 5,
+        #         'placeholder': 'Что интересеного у вас сегодня?',
+        #         'maxlength': 280,
+        #         'minlength': 10
+        #     })
+        # }

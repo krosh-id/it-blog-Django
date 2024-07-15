@@ -433,6 +433,14 @@ body {
   font-size: 13px;
   text-align: center;
 }
+.main-section__order-info-date {
+  color: white;
+  font-weight: 300;
+  font-size: 13px;
+  border: 1px solid #B2B1B1;
+  border-radius: 5px;
+  padding: 4px 7px;
+}
 
 .comment {
   display: flex;
@@ -630,6 +638,10 @@ body {
   height: 258px;
 }
 
+.items-data {
+  justify-content: center !important;
+}
+
 .items-named {
   border: 1px solid #B2B1B1;
   border-radius: 5px;
@@ -734,6 +746,14 @@ body {
 }
 .items-named__form {
   padding: 12px 29px;
+}
+.items-named__label {
+  color: #B2B1B1;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+.items-named__field {
+  margin-bottom: 7px;
 }
 .items-named__empty-cart {
   display: flex;

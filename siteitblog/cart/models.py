@@ -31,5 +31,8 @@ class Product(models.Model):
         verbose_name_plural = 'Товары'
         ordering = ['-date_created']
 
+    def __str__(self):
+        return self.name
+
     def get_absolute_url(self):
         return reverse('product', kwargs={'post_id': self.id})
