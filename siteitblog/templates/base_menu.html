@@ -48,7 +48,11 @@
             <ul>
                 <li><a href="{% url 'cart:product_list_all' %}" class="menu-list__text" title="Услуги">Услуги</a></li>
                 <li><a href="{% url 'cart:cart' %}" class="menu-list__text" title="Корзина товаров">Корзина</a></li>
-                <li><a href="{% url 'order:orders' %}" class="menu-list__text" title="Заказы">Заказы</a></li>
+                 {% if perms.orders.change_order %}
+                    <li><a href="{% url 'order:orders_edit' %}" class="menu-list__text" title="Заказы клиентов">Заказы клиентов</a></li>
+                 {% else %}
+                     <li><a href="{% url 'order:orders' %}" class="menu-list__text" title="Заказы">Заказы</a></li>
+                 {% endif %}
             </ul>
         </div>
     </li>

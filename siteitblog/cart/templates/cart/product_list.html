@@ -30,10 +30,12 @@
                     <img src="{{ product.image.url }}" alt="" class="items-named__product-image">
                     <p class="items-named__product-price">{{ product.price }} ₽</p>
                     <p class="items-named__product-title"> {{ product.name|truncatechars_html:47 }} </p>
-                    {% if product.id in cart %}
-                        <button class="orange-button items-named__product-button remove-btn" data-in-cart="true">Добавлено в корзину</button>
-                    {% else %}
-                        <button class="orange-button items-named__product-button" data-in-cart="false">Купить</button>
+                    {% if perms.users.change_cart%}
+                        {% if product.id in cart %}
+                            <button class="orange-button items-named__product-button remove-btn" data-in-cart="true">Добавлено в корзину</button>
+                        {% else %}
+                            <button class="orange-button items-named__product-button" data-in-cart="false">Купить</button>
+                        {% endif %}
                     {% endif %}
                 </div>
             {% endfor %}

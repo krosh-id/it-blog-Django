@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseNotFound
 from django.views.generic import View, ListView, DetailView
