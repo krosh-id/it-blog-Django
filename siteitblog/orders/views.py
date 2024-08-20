@@ -80,7 +80,7 @@ class OrdersView(LoginRequiredMixin, ListView):
         user = self.request.user
         if user.has_perm('orders.change_order'):
             return Order.objects.all()
-        return Order.objects.filter(user=self.request.user).all()
+        return Order.objects.filter(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         cart = Cart(self.request)

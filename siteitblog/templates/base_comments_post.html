@@ -4,7 +4,7 @@
 {#    реализовать пагинацию комментариев #}
     {% for comment in comments %}
         <div class="comment" >
-            <img class="image-icon" src="{{ comment.author.img }}" alt="" srcset="">
+            <img class="image-icon" src="{{ comment.author.photo.url }}" alt="" srcset="">
             <div class="comment__text">
                 <span class="main-section__post-name">{{ comment.author.first_name }} {{ comment.author.last_name }}</span>
                 <span class="main-section__post-text">{{ comment.text }}</span>
@@ -33,7 +33,7 @@
         <form action="" method="post">
             {% csrf_token %}
             <div class="main-section__input-comment">
-                <img class="image-icon" src="{{ profile.img }}" />
+                <img class="image-icon" src="{{ profile.photo.url }}" />
                 {{ form.text }}
             </div>
             <button class="button-icon" type="submit"><img src="{% static 'blog/icon/send-message.svg' %}" /></button>

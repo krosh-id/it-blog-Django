@@ -22,7 +22,7 @@ class Order(models.Model):
     mobile_number = models.CharField(max_length=20, verbose_name="Мобильный телефон")
     address = models.CharField(max_length=100, null=True, blank=True, default=None, verbose_name="Адрес покупателя")
     total_price = models.PositiveIntegerField(verbose_name="Итоговая стоимость")
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=PROCESSING)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default=PROCESSING, verbose_name="Статус выполнения")
     date = models.DateTimeField(auto_now_add=True, verbose_name="Дата заказа")
     date_complete = models.DateField(null=True, blank=True, default=None, verbose_name="Дата выполнения")
 

@@ -56,7 +56,7 @@
             <div class="items-named__product-orders__price">
                 <p class="items-named__product-cart__price-value">{{ order.total_price }}₽</p>
                 <p class="items-named__product-cart__price-dsc">за услугу</p>
-                <a href="{{ order.get_absolute_url }}">Обсудить заказ</a>
+                <a href="{{ order.get_absolute_url }}">Посмотреть детали</a>
                 {% if order.status == 'PROCESSING' %}
                 	<br>
                     <button class="button-icon items-named__order-button-remove"><img src="{% static 'blog/icon/remove.svg' %}"></button>
